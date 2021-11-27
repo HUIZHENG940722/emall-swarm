@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/admin")
-@Api(tags = "UmsAdminController")
+@Api(tags = "UmsAdminController", description = "后台用户管理")
 public class UmsAdminController {
 
 }
