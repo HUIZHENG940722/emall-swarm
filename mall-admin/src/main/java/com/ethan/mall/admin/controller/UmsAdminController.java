@@ -7,6 +7,7 @@ import com.ethan.mall.model.UmsAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "注册用户")
     @PostMapping(value = "/register")
-    public CommonData<UmsAdmin> register(@RequestBody UmsAdminRegisterParam adminRegisterParam) {
+    public CommonData<UmsAdmin> register(@Validated @RequestBody UmsAdminRegisterParam adminRegisterParam) {
         UmsAdmin admin = adminService.register(adminRegisterParam);
         if (admin == null) {
             return CommonData.failed();
