@@ -1,1 +1,0 @@
-select * from ums_admin_role_relation;

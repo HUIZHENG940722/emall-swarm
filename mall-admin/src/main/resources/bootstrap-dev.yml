@@ -1,6 +1,6 @@
-#spring:
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: http://192.168.3.5:8848
-#        namespace: public
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://192.168.3.5:8848
+        namespace: public
