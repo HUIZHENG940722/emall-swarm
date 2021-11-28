@@ -39,6 +39,12 @@ public class UmsAdminService implements IUmsAdminService {
         if (CollUtil.isNotEmpty(umsAdmins)) {
             Asserts.fail("用户名已存在");
         }
+        // 1.3 邮箱校验
+        String email = adminRegisterParam.getEmail();
+        if (StrUtil.isNotBlank(email) && !email.matches(
+                "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$")) {
+            Asserts.fail("邮箱非法");
+        }
         // 2 插入后台用户
         // 2.1 赋值基础数据
         UmsAdmin admin = new UmsAdmin();
