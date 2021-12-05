@@ -1,3 +1,7 @@
+GET http://localhost:8080/productCategory/list/withChildren
+Accept: application/json
+
+###
 POST http://localhost:8080/admin/register
 Content-Type: application/json
 
