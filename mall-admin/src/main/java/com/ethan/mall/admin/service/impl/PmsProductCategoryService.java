@@ -1,5 +1,7 @@
 package com.ethan.mall.admin.service.impl;
 
+import com.ethan.mall.admin.dao.PmsProductCategoryDao;
+import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.admin.service.IPmsProductCategoryService;
 import com.ethan.mall.mapper.PmsProductCategoryMapper;
 import com.ethan.mall.model.PmsProductCategory;
@@ -8,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +22,8 @@ import java.util.List;
 public class PmsProductCategoryService implements IPmsProductCategoryService {
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
+    @Resource
+    private PmsProductCategoryDao productCategoryDao;
     @Override
     public List<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum) {
         // 1 校验
@@ -32,5 +37,15 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
         List<PmsProductCategory> productCategoryList = productCategoryMapper.selectByExample(example);
         // 3 返回结果集
         return productCategoryList;
+    }
+
+    @Override
+    public List<PmsProductCategoryWithChildrenItem> listWithChildren() {
+        // 1 校验
+        // 2 查询
+        List<PmsProductCategoryWithChildrenItem> productCategoryWithChildrenItemList =
+                productCategoryDao.listWithChildren();
+        // 3 返回结果集
+        return productCategoryWithChildrenItemList;
     }
 }

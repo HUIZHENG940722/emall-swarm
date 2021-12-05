@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.admin.service.IPmsProductCategoryService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
@@ -30,5 +31,13 @@ public class PmsProductCategoryController {
                                                               @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum){
         List<PmsProductCategory> productCategoryList = productCategoryService.getList(parentId, pageSize, pageNum);
         return CommonData.success(CommonPage.restPage(productCategoryList));
+    }
+
+    @ApiOperation("查询所有一级分类以及子分类")
+    @GetMapping(value = "/list/withChildren")
+    public CommonData<List<PmsProductCategoryWithChildrenItem>> listWithChildren() {
+        List<PmsProductCategoryWithChildrenItem> productCategoryWithChildrenItemList =
+                productCategoryService.listWithChildren();
+        return CommonData.success(productCategoryWithChildrenItemList);
     }
 }

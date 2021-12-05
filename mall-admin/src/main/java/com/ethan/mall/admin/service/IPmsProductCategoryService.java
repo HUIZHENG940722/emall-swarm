@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.model.PmsProductCategory;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface IPmsProductCategoryService {
      * @return
      */
     List<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum);
+
+    /**
+     * 查询商品分类的层级结构
+     * @return
+     */
+    List<PmsProductCategoryWithChildrenItem> listWithChildren();
 }
