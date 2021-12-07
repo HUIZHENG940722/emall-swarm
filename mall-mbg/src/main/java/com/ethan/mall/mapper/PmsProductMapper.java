@@ -16,15 +16,21 @@ public interface PmsProductMapper {
 
     int insertSelective(PmsProduct record);
 
+    List<PmsProduct> selectByExampleWithBLOBs(PmsProductExample example);
+
     List<PmsProduct> selectByExample(PmsProductExample example);
 
     PmsProduct selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") PmsProduct record, @Param("example") PmsProductExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") PmsProduct record, @Param("example") PmsProductExample example);
+
     int updateByExample(@Param("record") PmsProduct record, @Param("example") PmsProductExample example);
 
     int updateByPrimaryKeySelective(PmsProduct record);
+
+    int updateByPrimaryKeyWithBLOBs(PmsProduct record);
 
     int updateByPrimaryKey(PmsProduct record);
 }

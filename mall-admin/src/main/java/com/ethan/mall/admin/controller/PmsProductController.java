@@ -29,4 +29,10 @@ public class PmsProductController {
         List<PmsProduct> productList = productService.list(productQueryParam, pageSize, pageNum);
         return CommonData.success(CommonPage.restPage(productList));
     }
+
+    @ApiOperation(value = "添加商品")
+    @PostMapping(value = "/add")
+    public CommonData add() {
+        return null;
+    }
 }
