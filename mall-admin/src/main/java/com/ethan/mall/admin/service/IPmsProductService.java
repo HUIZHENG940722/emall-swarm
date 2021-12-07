@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.PmsProductAddParam;
 import com.ethan.mall.admin.domain.PmsProductQueryParam;
 import com.ethan.mall.model.PmsProduct;
 
@@ -20,4 +21,11 @@ public interface IPmsProductService {
      * @return
      */
     List<PmsProduct> list(PmsProductQueryParam productQueryParam, Integer pageSize, Integer pageNum);
+
+    /**
+     * 添加商品
+     * @param productAddParam
+     * @return
+     */
+    int create(PmsProductAddParam productAddParam);
 }

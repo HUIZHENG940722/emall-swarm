@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.PmsProductAddParam;
 import com.ethan.mall.admin.domain.PmsProductQueryParam;
 import com.ethan.mall.admin.service.IPmsProductService;
 import com.ethan.mall.common.api.CommonData;
@@ -30,9 +31,13 @@ public class PmsProductController {
         return CommonData.success(CommonPage.restPage(productList));
     }
 
-    @ApiOperation(value = "添加商品")
-    @PostMapping(value = "/add")
-    public CommonData add() {
-        return null;
+    @ApiOperation(value = "创建商品")
+    @PostMapping(value = "/create")
+    public CommonData create(@RequestBody PmsProductAddParam productAddParam) {
+        int count = productService.create(productAddParam);
+        if (count > 0) {
+            CommonData.success(count);
+        }
+        return CommonData.failed();
     }
 }
