@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.PmsProductCategoryAddParam;
 import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.model.PmsProductCategory;
 
@@ -25,4 +26,11 @@ public interface IPmsProductCategoryService {
      * @return
      */
     List<PmsProductCategoryWithChildrenItem> listWithChildren();
+
+    /**
+     * 创建商品分类
+     * @param productCategoryAddParam
+     * @return
+     */
+    int create(PmsProductCategoryAddParam productCategoryAddParam);
 }

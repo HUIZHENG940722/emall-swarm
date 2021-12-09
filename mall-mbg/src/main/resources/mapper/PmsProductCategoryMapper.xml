@@ -17,6 +17,7 @@
     <result column="nav_status" jdbcType="INTEGER" property="navStatus" />
     <result column="show_status" jdbcType="INTEGER" property="showStatus" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ethan.mall.model.PmsProductCategory">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, tenant_id, revision, created_by, created_time, updated_by, updated_time, parent_id, 
-    name, level, product_count, product_unit, nav_status, show_status, icon
+    name, level, product_count, product_unit, nav_status, show_status, icon, keywords
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -142,14 +143,14 @@
       created_time, updated_by, updated_time, 
       parent_id, name, level, 
       product_count, product_unit, nav_status, 
-      show_status, icon, description
-      )
+      show_status, icon, keywords, 
+      description)
     values (#{tenantId,jdbcType=BIGINT}, #{revision,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, 
       #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=BIGINT}, #{updatedTime,jdbcType=TIMESTAMP}, 
       #{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
       #{productCount,jdbcType=INTEGER}, #{productUnit,jdbcType=VARCHAR}, #{navStatus,jdbcType=INTEGER}, 
-      #{showStatus,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
-      )
+      #{showStatus,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
+      #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ethan.mall.model.PmsProductCategory">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -199,6 +200,9 @@
       <if test="icon != null">
         icon,
       </if>
+      <if test="keywords != null">
+        keywords,
+      </if>
       <if test="description != null">
         description,
       </if>
@@ -245,6 +249,9 @@
       </if>
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null">
+        #{keywords,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
@@ -305,6 +312,9 @@
       <if test="record.icon != null">
         icon = #{record.icon,jdbcType=VARCHAR},
       </if>
+      <if test="record.keywords != null">
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
       <if test="record.description != null">
         description = #{record.description,jdbcType=LONGVARCHAR},
       </if>
@@ -330,6 +340,7 @@
       nav_status = #{record.navStatus,jdbcType=INTEGER},
       show_status = #{record.showStatus,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -351,7 +362,8 @@
       product_unit = #{record.productUnit,jdbcType=VARCHAR},
       nav_status = #{record.navStatus,jdbcType=INTEGER},
       show_status = #{record.showStatus,jdbcType=INTEGER},
-      icon = #{record.icon,jdbcType=VARCHAR}
+      icon = #{record.icon,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -401,6 +413,9 @@
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
+      <if test="keywords != null">
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
@@ -423,6 +438,7 @@
       nav_status = #{navStatus,jdbcType=INTEGER},
       show_status = #{showStatus,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -441,7 +457,8 @@
       product_unit = #{productUnit,jdbcType=VARCHAR},
       nav_status = #{navStatus,jdbcType=INTEGER},
       show_status = #{showStatus,jdbcType=INTEGER},
-      icon = #{icon,jdbcType=VARCHAR}
+      icon = #{icon,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

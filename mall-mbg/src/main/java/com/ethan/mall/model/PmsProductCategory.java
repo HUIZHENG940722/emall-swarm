@@ -50,6 +50,9 @@ public class PmsProductCategory implements Serializable {
     @ApiModelProperty(value = "图标")
     private String icon;
 
+    @ApiModelProperty(value = "搜索关键字")
+    private String keywords;
+
     @ApiModelProperty(value = "描述")
     private String description;
 
@@ -175,6 +178,14 @@ public class PmsProductCategory implements Serializable {
         this.icon = icon;
     }
 
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -204,6 +215,7 @@ public class PmsProductCategory implements Serializable {
         sb.append(", navStatus=").append(navStatus);
         sb.append(", showStatus=").append(showStatus);
         sb.append(", icon=").append(icon);
+        sb.append(", keywords=").append(keywords);
         sb.append(", description=").append(description);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

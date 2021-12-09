@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.PmsProductCategoryAddParam;
 import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.admin.service.IPmsProductCategoryService;
 import com.ethan.mall.common.api.CommonData;
@@ -8,6 +9,7 @@ import com.ethan.mall.model.PmsProductCategory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,5 +42,16 @@ public class PmsProductCategoryController {
         List<PmsProductCategoryWithChildrenItem> productCategoryWithChildrenItemList =
                 productCategoryService.listWithChildren();
         return CommonData.success(productCategoryWithChildrenItemList);
+    }
+
+    @ApiOperation(value = "创建商品分类")
+    @PostMapping(value = "/create")
+    public CommonData add(@Validated @RequestBody PmsProductCategoryAddParam productCategoryAddParam) {
+        int count = productCategoryService.create(productCategoryAddParam);
+        if (count > 0) {
+            return CommonData.success(count);
+        } else {
+            return CommonData.failed();
+        }
     }
 }
