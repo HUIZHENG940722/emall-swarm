@@ -41,4 +41,17 @@ public class PmsProductAttributeCategoryService implements IPmsProductAttributeC
         // 3 返回结果集
         return productAttributeCategoryList;
     }
+
+    @Override
+    public int update(Long id, String name) {
+        // 1 校验
+        // 2 更新
+        PmsProductAttributeCategory productAttributeCategory = new PmsProductAttributeCategory();
+        productAttributeCategory.setName(name);
+        productAttributeCategory.setId(id);
+        productAttributeCategory.setUpdatedTime(new Date());
+        int count = productAttributeCategoryMapper.updateByPrimaryKeySelective(productAttributeCategory);
+        // 3 返回结果集
+        return count;
+    }
 }

@@ -43,4 +43,15 @@ public class PmsProductAttributeCategoryController {
                 .getList(pageSize, pageNum);
         return CommonData.success(CommonPage.restPage(productAttributeCategoryList));
     }
+
+    @ApiOperation("修改商品类型分类")
+    @PostMapping(value = "/update/{id}")
+    public CommonData update(@PathVariable Long id, @RequestParam String name) {
+        int count = productAttributeCategoryService.update(id, name);
+        if (count > 0) {
+            return CommonData.success(count);
+        } else {
+            return CommonData.failed();
+        }
+    }
 }

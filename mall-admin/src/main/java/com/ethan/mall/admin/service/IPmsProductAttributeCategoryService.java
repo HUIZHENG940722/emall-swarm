@@ -24,4 +24,12 @@ public interface IPmsProductAttributeCategoryService {
      * @return
      */
     List<PmsProductAttributeCategory> getList(Integer pageSize, Integer pageNum);
+
+    /**
+     * 修改商品类型分类
+     * @param id
+     * @param name
+     * @return
+     */
+    int update(Long id, String name);
 }
