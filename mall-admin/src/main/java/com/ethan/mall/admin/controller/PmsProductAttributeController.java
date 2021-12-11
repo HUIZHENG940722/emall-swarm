@@ -55,4 +55,15 @@ public class PmsProductAttributeController {
         PmsProductAttribute productAttribute = productAttributeService.getItem(id);
         return CommonData.success(productAttribute);
     }
+
+    @ApiOperation("修改商品属性信息")
+    @PostMapping(value = "/update/{id}")
+    public CommonData update(@PathVariable Long id, @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
+        int count = productAttributeService.update(id, productAttributeCreateParam);
+        if (count > 0) {
+            return CommonData.success(count);
+        } else {
+            return CommonData.failed();
+        }
+    }
 }

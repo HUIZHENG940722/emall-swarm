@@ -34,4 +34,12 @@ public interface IPmsProductAttributeService {
      * @return
      */
     PmsProductAttribute getItem(Long id);
+
+    /**
+     * 编辑商品类型
+     * @param id
+     * @param productAttributeCreateParam
+     * @return
+     */
+    int update(Long id, PmsProductAttributeCreateParam productAttributeCreateParam);
 }

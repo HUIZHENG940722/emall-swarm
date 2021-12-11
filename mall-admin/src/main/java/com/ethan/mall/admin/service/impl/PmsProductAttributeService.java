@@ -73,4 +73,18 @@ public class PmsProductAttributeService implements IPmsProductAttributeService {
         // 3 返回结果集
         return pmsProductAttribute;
     }
+
+    @Override
+    public int update(Long id, PmsProductAttributeCreateParam productAttributeCreateParam) {
+        // 1 校验
+        // 2 更新逻辑
+        // 2.1 拼装更新条件
+        PmsProductAttribute productAttribute = new PmsProductAttribute();
+        BeanUtil.copyProperties(productAttributeCreateParam, productAttribute);
+        productAttribute.setId(id);
+        // 2.2 执行更新
+        int count = productAttributeMapper.updateByPrimaryKeySelective(productAttribute);
+        // 3 返回结果集
+        return count;
+    }
 }
