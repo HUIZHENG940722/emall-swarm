@@ -8,10 +8,10 @@ import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.model.PmsProductCategory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ import java.util.List;
 @Api(value = "PmsProductCategoryController", description = "商品分类管理")
 @RequestMapping(value = "/productCategory")
 public class PmsProductCategoryController {
-    @Autowired
+    @Resource
     private IPmsProductCategoryService productCategoryService;
 
     @ApiOperation("分页查询商品分类")

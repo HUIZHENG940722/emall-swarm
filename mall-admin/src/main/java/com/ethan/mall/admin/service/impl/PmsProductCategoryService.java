@@ -9,7 +9,6 @@ import com.ethan.mall.mapper.PmsProductCategoryMapper;
 import com.ethan.mall.model.PmsProductCategory;
 import com.ethan.mall.model.PmsProductCategoryExample;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class PmsProductCategoryService implements IPmsProductCategoryService {
-    @Autowired
+    @Resource
     private PmsProductCategoryMapper productCategoryMapper;
     @Resource
     private PmsProductCategoryDao productCategoryDao;
