@@ -156,7 +156,7 @@ CREATE TABLE pms_product_attribute(
       hand_add_status INT(1)    COMMENT '是否支持手动新增;0->不支持；1->支持' ,
       type INT(1) NOT NULL   COMMENT '属性的类型;0->规格；1->参数' ,
       PRIMARY KEY (id)
-)  COMMENT = '商品属性表';
+)  COMMENT = '商品类型表';
 
 -- ----------------------------
 -- Table structure for pms_product_attribute_value
