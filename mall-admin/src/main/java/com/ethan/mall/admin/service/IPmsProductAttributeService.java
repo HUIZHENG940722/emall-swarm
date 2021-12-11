@@ -1,6 +1,9 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.PmsProductAttributeCreateParam;
+import com.ethan.mall.model.PmsProductAttribute;
+
+import java.util.List;
 
 /**
  * @author ethan
@@ -14,4 +17,21 @@ public interface IPmsProductAttributeService {
      * @return
      */
     int create(PmsProductAttributeCreateParam productAttributeCreateParam);
+
+    /**
+     * 根据类型分类查询类型列表
+     * @param cid
+     * @param type
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    List<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum);
+
+    /**
+     * 根据商品类型id获取商品
+     * @param id
+     * @return
+     */
+    PmsProductAttribute getItem(Long id);
 }

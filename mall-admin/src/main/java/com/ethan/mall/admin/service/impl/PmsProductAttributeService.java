@@ -7,10 +7,13 @@ import com.ethan.mall.mapper.PmsProductAttributeCategoryMapper;
 import com.ethan.mall.mapper.PmsProductAttributeMapper;
 import com.ethan.mall.model.PmsProductAttribute;
 import com.ethan.mall.model.PmsProductAttributeCategory;
+import com.ethan.mall.model.PmsProductAttributeExample;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author ethan
@@ -43,5 +46,31 @@ public class PmsProductAttributeService implements IPmsProductAttributeService {
         productAttributeCategoryMapper.updateByPrimaryKey(pmsProductAttributeCategory);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public List<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum) {
+        // 1 校验
+        // 2 查询逻辑
+        // 2.1 开启分页功能
+        PageHelper.startPage(pageNum, pageSize);
+        // 2.2 设置查询条件
+        PmsProductAttributeExample example = new PmsProductAttributeExample();
+        PmsProductAttributeExample.Criteria criteria = example.createCriteria();
+        criteria.andProductAttributeCategoryIdEqualTo(cid);
+        criteria.andTypeEqualTo(type);
+        // 2.3 执行查询
+        List<PmsProductAttribute> pmsProductAttributes = productAttributeMapper.selectByExample(example);
+        // 3 返回结果集
+        return pmsProductAttributes;
+    }
+
+    @Override
+    public PmsProductAttribute getItem(Long id) {
+        // 1 校验
+        // 2 查询逻辑
+        PmsProductAttribute pmsProductAttribute = productAttributeMapper.selectByPrimaryKey(id);
+        // 3 返回结果集
+        return pmsProductAttribute;
     }
 }
