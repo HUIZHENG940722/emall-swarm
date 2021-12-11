@@ -1,5 +1,9 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.model.PmsProductAttributeCategory;
+
+import java.util.List;
+
 /**
  * @author ethan
  * @Date 2:01 PM 2021/12/11
@@ -12,4 +16,12 @@ public interface IPmsProductAttributeCategoryService {
      * @return
      */
     int create(String name);
+
+    /**
+     * 获取商品属性分类列表
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    List<PmsProductAttributeCategory> getList(Integer pageSize, Integer pageNum);
 }
