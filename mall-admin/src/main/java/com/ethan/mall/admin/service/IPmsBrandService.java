@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.PmsBrandCreateParam;
 import com.ethan.mall.model.PmsBrand;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,11 @@ public interface IPmsBrandService {
      * @return
      */
     List<PmsBrand> getList(String keyword, Integer pageNum, Integer pageSize);
+
+    /**
+     * 创建商品品牌
+     * @param brandCreateParam
+     * @return
+     */
+    int create(PmsBrandCreateParam brandCreateParam);
 }

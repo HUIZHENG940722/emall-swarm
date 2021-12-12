@@ -1,14 +1,13 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.PmsBrandCreateParam;
 import com.ethan.mall.admin.service.IPmsBrandService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.model.PmsBrand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,5 +30,15 @@ public class PmsBrandController {
                                               @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         List<PmsBrand> brandList = brandService.getList(keyword, pageNum, pageSize);
         return CommonData.success(brandList);
+    }
+
+    @ApiOperation(value = "创建商品品牌")
+    @PostMapping(value = "/create")
+    public CommonData create(@Validated @RequestBody PmsBrandCreateParam pmsBrand) {
+        int count = brandService.create(pmsBrand);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
     }
 }
