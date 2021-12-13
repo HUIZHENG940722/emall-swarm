@@ -1,3 +1,7 @@
+GET http://localhost:8080/aliyun/oss/initPostData
+Accept: application/json
+
+###
 GET http://localhost:8080/brand/list?pageNum=1&pageSize=10
 Accept: application/json
 
