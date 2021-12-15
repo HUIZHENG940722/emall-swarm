@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date 10:54 PM 2021/12/13
  * @Description 阿里云OSS对象存储配置
  */
-@Configuration
+/*@Configuration
 public class OssConfig {
 
     @Value("${aliyun.oss.endpoint}")
@@ -23,4 +23,4 @@ public class OssConfig {
     public OSSClient ossClient(){
         return new OSSClient(ALIYUN_OSS_ENDPOINT,ALIYUN_OSS_ACCESSKEYID,ALIYUN_OSS_ACCESSKEYSECRET);
     }
-}
+}*/

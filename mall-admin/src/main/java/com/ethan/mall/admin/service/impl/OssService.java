@@ -1,16 +1,12 @@
 package com.ethan.mall.admin.service.impl;
 
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.common.utils.BinaryUtil;
-import com.aliyun.oss.model.MatchMode;
-import com.aliyun.oss.model.PolicyConditions;
+import cn.hutool.core.codec.Base64;
+import com.aliyun.oss.common.auth.ServiceSignature;
 import com.ethan.mall.admin.domain.OssPostUploadData;
 import com.ethan.mall.admin.service.IOssService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,9 +27,10 @@ public class OssService implements IOssService {
     private int ALIYUN_OSS_EXPIRE;
     @Value("${aliyun.oss.maxSize}")
     private int ALIYUN_OSS_MAX_SIZE;
-
-    @Resource
-    private OSSClient ossClient;
+    @Value("${aliyun.oss.accessKeyId}")
+    private String ALIYUN_OSS_ACCESSKEYID;
+    @Value("${aliyun.oss.accessKeySecret}")
+    private String ALIYUN_OSS_ACCESSKEYSECRET;
 
     @Override
     public OssPostUploadData initPostData() {
@@ -48,23 +45,24 @@ public class OssService implements IOssService {
         String action = "https://" + ALIYUN_OSS_BUCKET_NAME + "." + ALIYUN_OSS_ENDPOINT;
         ossPostUploadData.setHost(action);
         // 2.3 初始化policy
-        PolicyConditions policyConditions = new PolicyConditions();
         // 文件大小
         long maxSize = ALIYUN_OSS_MAX_SIZE * 1024 * 1024;
-        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
         // 设置文件路径规范
-        policyConditions.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
         // 签名有效期
         long expireEndTime = System.currentTimeMillis() + ALIYUN_OSS_EXPIRE * 1000;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         Date expiration = new Date(expireEndTime);
-        String postPolicy = ossClient.generatePostPolicy(expiration, policyConditions);
-        byte[] bytes = postPolicy.getBytes(StandardCharsets.UTF_8);
-        String policy = BinaryUtil.toBase64String(bytes);
+        String format = dateFormat.format(expiration);
+        String policyStr = "{\"expiration\":\"" + format + "\",\"conditions\":[[\"content-length-range\",0,"
+                + maxSize + "],{\"bucket\":\""+ ALIYUN_OSS_BUCKET_NAME +"\"},[\"starts-with\",\"$key\",\""
+                + dir + "\"]]}";
+        String policy = Base64.encode(policyStr);
         ossPostUploadData.setPolicy(policy);
-        String signature = ossClient.calculatePostSignature(policy);
+        // 2.4 生成签名信息
+        String signature = ServiceSignature.create().computeSignature(ALIYUN_OSS_ACCESSKEYSECRET, policy);
         ossPostUploadData.setSignature(signature);
-        // 2.4 设置OSSAccessKeyId
-        ossPostUploadData.setOSSAccessKeyId(ossClient.getCredentialsProvider().getCredentials().getAccessKeyId());
+        // 2.5 设置OSSAccessKeyId
+        ossPostUploadData.setOSSAccessKeyId(ALIYUN_OSS_ACCESSKEYID);
         // 3 返回结果集
         return ossPostUploadData;
     }
