@@ -2,11 +2,13 @@ package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.codec.Base64;
 import com.aliyun.oss.common.auth.ServiceSignature;
+import com.ethan.mall.admin.domain.OssCallbackData;
 import com.ethan.mall.admin.domain.OssPostUploadData;
 import com.ethan.mall.admin.service.IOssService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -65,5 +67,23 @@ public class OssService implements IOssService {
         ossPostUploadData.setOSSAccessKeyId(ALIYUN_OSS_ACCESSKEYID);
         // 3 返回结果集
         return ossPostUploadData;
+    }
+
+    @Override
+    public OssCallbackData callback(HttpServletRequest request) {
+        // 1 校验
+        // 2 执行逻辑
+        OssCallbackData ossCallbackData = new OssCallbackData();
+        // 2.1 获取文件名
+        String filename = request.getParameter("filename");
+        filename = "https://".concat(ALIYUN_OSS_BUCKET_NAME).concat(".").concat(ALIYUN_OSS_ENDPOINT)
+                .concat("/").concat(filename);
+        ossCallbackData.setFilename(filename);
+        ossCallbackData.setSize(request.getParameter("size"));
+        ossCallbackData.setMimeType(request.getParameter("mimeType"));
+        ossCallbackData.setWidth(request.getParameter("width"));
+        ossCallbackData.setHeight(request.getParameter("height"));
+        // 3 返回结果集
+        return ossCallbackData;
     }
 }

@@ -1,6 +1,9 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.OssCallbackData;
 import com.ethan.mall.admin.domain.OssPostUploadData;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ethan
@@ -13,4 +16,11 @@ public interface IOssService {
      * @return
      */
     OssPostUploadData initPostData();
+
+    /**
+     * OSS上传回调
+     * @param request
+     * @return
+     */
+    OssCallbackData callback(HttpServletRequest request);
 }

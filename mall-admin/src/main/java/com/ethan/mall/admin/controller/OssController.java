@@ -1,15 +1,18 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.OssCallbackData;
 import com.ethan.mall.admin.domain.OssPostUploadData;
 import com.ethan.mall.admin.service.IOssService;
 import com.ethan.mall.common.api.CommonData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ethan
@@ -31,5 +34,12 @@ public class OssController {
             return CommonData.success(ossPostUploadData);
         }
         return CommonData.failed();
+    }
+
+    @ApiOperation(value = "oss上传成功回调")
+    @PostMapping(value = "/callback")
+    public CommonData<OssCallbackData> callback(HttpServletRequest request) {
+        OssCallbackData ossCallbackResult = ossService.callback(request);
+        return CommonData.success(ossCallbackResult);
     }
 }
