@@ -20,8 +20,6 @@ public class OssPostUploadData {
     private String dir;
     @ApiModelProperty("oss对外服务的访问域名")
     private String host;
-    @ApiModelProperty("上传成功回调url")
-    private String callbackUrl;
-    @ApiModelProperty("发起回调时请求body的值")
-    private String callbackBody;
+    @ApiModelProperty(value = "上传的回调设置，采用x-oss-callback消息头的方式")
+    private String callback;
 }

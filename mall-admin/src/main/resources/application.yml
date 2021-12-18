@@ -14,10 +14,10 @@ aliyun:
     endpoint: oss-cn-shenzhen.aliyuncs.com # oss对外服务的访问域名
     accessKeyId: LTAI5tPsVb7b1DktXAT9nUbP # 访问身份验证中用到用户标识
     accessKeySecret: Y8XatePpBknQ2D74lYuSuVqUe72XnX # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
-    bucketName: ethan-emall # oss的存储空间
+    bucketName: ethan-oss-dev # oss的存储空间
     policy:
       expire: 300 # 签名有效期(S)
     maxSize: 10 # 上传文件大小(M)
-    callback: http://localhost:8080/aliyun/oss/callback # 文件上传成功后的回调地址
+    callback: http://atpp36.natappfree.cc/aliyun/oss/callback # 文件上传成功后的回调地址
     dir:
-      prefix: mall/images/ # 上传文件夹路径前缀
+      prefix: emall/images/ # 上传文件夹路径前缀
