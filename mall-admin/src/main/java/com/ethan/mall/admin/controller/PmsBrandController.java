@@ -42,4 +42,11 @@ public class PmsBrandController {
         }
         return CommonData.failed();
     }
+
+    @ApiOperation(value = "根据编号查询品牌信息")
+    @GetMapping(value = "/{id}")
+    public CommonData<PmsBrand> getItem(@PathVariable(value = "id") Long id) {
+        PmsBrand brand = brandService.getItem(id);
+        return CommonData.success(brand);
+    }
 }

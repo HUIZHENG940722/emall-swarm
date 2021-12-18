@@ -55,4 +55,13 @@ public class PmsBrandService implements IPmsBrandService {
         // 3 返回结果集
         return count;
     }
+
+    @Override
+    public PmsBrand getItem(Long id) {
+        // 1 校验
+        // 2 查询
+        PmsBrand brand = brandMapper.selectByPrimaryKey(id);
+        // 3 返回结果集
+        return brand;
+    }
 }

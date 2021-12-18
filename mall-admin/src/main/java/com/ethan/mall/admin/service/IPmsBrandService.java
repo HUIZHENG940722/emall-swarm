@@ -28,4 +28,11 @@ public interface IPmsBrandService {
      * @return
      */
     int create(PmsBrandCreateParam brandCreateParam);
+
+    /**
+     * 根据商品品牌id获取商品
+     * @param id
+     * @return
+     */
+    PmsBrand getItem(Long id);
 }
