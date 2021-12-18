@@ -2,7 +2,10 @@ package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
 import com.ethan.mall.admin.domain.PmsBrandCreateParam;
+import com.ethan.mall.admin.domain.PmsProductAddParam;
 import com.ethan.mall.admin.service.IPmsBrandService;
 import com.ethan.mall.mapper.PmsBrandMapper;
 import com.ethan.mall.model.PmsBrand;
@@ -63,5 +66,22 @@ public class PmsBrandService implements IPmsBrandService {
         PmsBrand brand = brandMapper.selectByPrimaryKey(id);
         // 3 返回结果集
         return brand;
+    }
+
+    @Override
+    public int update(Long id, PmsBrandCreateParam brandCreateParam) {
+        // 1 校验
+        // 2 执行更新逻辑
+        PmsBrand brand = new PmsBrand();
+        BeanUtil.copyProperties(brandCreateParam, brand);
+        // 2.1 设置品牌id
+        brand.setId(id);
+        // 2.2 设置首字母
+        if (StrUtil.isBlank(brand.getFirstLetter())) {
+            brand.setFirstLetter(brand.getName().substring(0, 1));
+        }
+        int count = brandMapper.updateByPrimaryKeySelective(brand);
+        // 3 返回结果集
+        return count;
     }
 }

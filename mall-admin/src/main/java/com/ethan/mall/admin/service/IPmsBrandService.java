@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.PmsBrandCreateParam;
+import com.ethan.mall.admin.domain.PmsProductAddParam;
 import com.ethan.mall.model.PmsBrand;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +36,12 @@ public interface IPmsBrandService {
      * @return
      */
     PmsBrand getItem(Long id);
+
+    /**
+     * 根据商品id更新商品
+     * @param id
+     * @param brandCreateParam
+     * @return
+     */
+    int update(Long id, PmsBrandCreateParam brandCreateParam);
 }

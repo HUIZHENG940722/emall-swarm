@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.controller;
 
 import com.ethan.mall.admin.domain.PmsBrandCreateParam;
+import com.ethan.mall.admin.domain.PmsProductAddParam;
 import com.ethan.mall.admin.service.IPmsBrandService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
@@ -48,5 +49,15 @@ public class PmsBrandController {
     public CommonData<PmsBrand> getItem(@PathVariable(value = "id") Long id) {
         PmsBrand brand = brandService.getItem(id);
         return CommonData.success(brand);
+    }
+
+    @ApiOperation(value = "根据品牌id更新商品品牌")
+    @PutMapping(value = "/update/{id}")
+    public CommonData update(@PathVariable(value = "id") Long id, @Validated @RequestBody PmsBrandCreateParam brandCreateParam) {
+        int count = brandService.update(id, brandCreateParam);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
     }
 }
