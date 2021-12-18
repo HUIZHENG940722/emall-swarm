@@ -109,10 +109,18 @@ CREATE TABLE pms_brand(
       updated_time DATETIME    COMMENT '更新时间' ,
       id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
       name VARCHAR(64) NOT NULL   COMMENT '品牌名称' ,
+      first_letter VARCHAR(64)    COMMENT '首字母' ,
+      sort bigint(11)    COMMENT '排序' ,
+      factory_status INT(1) NOT NULL  DEFAULT 0 COMMENT '是否为品牌制造商;0->不是；1->是；' ,
+      show_status INT(1) NOT NULL  DEFAULT 0 COMMENT '显示状态;0->不显示；1->显示；' ,
+      product_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '商品数量' ,
+      product_comment_count bigint(11)   DEFAULT 0 COMMENT '商品评论数量' ,
+      logo VARCHAR(255) NOT NULL   COMMENT '品牌logo' ,
       big_pic VARCHAR(255)    COMMENT '专区大图' ,
       brand_story TEXT    COMMENT '品牌故事' ,
       PRIMARY KEY (id)
 )  COMMENT = '商品品牌表';
+
 
 -- ----------------------------
 -- Table structure for pms_product_category

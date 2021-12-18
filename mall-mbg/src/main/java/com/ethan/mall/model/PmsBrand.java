@@ -29,6 +29,27 @@ public class PmsBrand implements Serializable {
     @ApiModelProperty(value = "品牌名称")
     private String name;
 
+    @ApiModelProperty(value = "首字母")
+    private String firstLetter;
+
+    @ApiModelProperty(value = "排序")
+    private Long sort;
+
+    @ApiModelProperty(value = "是否为品牌制造商;0->不是；1->是；")
+    private Integer factoryStatus;
+
+    @ApiModelProperty(value = "显示状态;0->不显示；1->显示；")
+    private Integer showStatus;
+
+    @ApiModelProperty(value = "商品数量")
+    private Long productCount;
+
+    @ApiModelProperty(value = "商品评论数量")
+    private Long productCommentCount;
+
+    @ApiModelProperty(value = "品牌logo")
+    private String logo;
+
     @ApiModelProperty(value = "专区大图")
     private String bigPic;
 
@@ -101,6 +122,62 @@ public class PmsBrand implements Serializable {
         this.name = name;
     }
 
+    public String getFirstLetter() {
+        return firstLetter;
+    }
+
+    public void setFirstLetter(String firstLetter) {
+        this.firstLetter = firstLetter;
+    }
+
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
+    public Integer getFactoryStatus() {
+        return factoryStatus;
+    }
+
+    public void setFactoryStatus(Integer factoryStatus) {
+        this.factoryStatus = factoryStatus;
+    }
+
+    public Integer getShowStatus() {
+        return showStatus;
+    }
+
+    public void setShowStatus(Integer showStatus) {
+        this.showStatus = showStatus;
+    }
+
+    public Long getProductCount() {
+        return productCount;
+    }
+
+    public void setProductCount(Long productCount) {
+        this.productCount = productCount;
+    }
+
+    public Long getProductCommentCount() {
+        return productCommentCount;
+    }
+
+    public void setProductCommentCount(Long productCommentCount) {
+        this.productCommentCount = productCommentCount;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public String getBigPic() {
         return bigPic;
     }
@@ -131,6 +208,13 @@ public class PmsBrand implements Serializable {
         sb.append(", updatedBy=").append(updatedBy);
         sb.append(", updatedTime=").append(updatedTime);
         sb.append(", name=").append(name);
+        sb.append(", firstLetter=").append(firstLetter);
+        sb.append(", sort=").append(sort);
+        sb.append(", factoryStatus=").append(factoryStatus);
+        sb.append(", showStatus=").append(showStatus);
+        sb.append(", productCount=").append(productCount);
+        sb.append(", productCommentCount=").append(productCommentCount);
+        sb.append(", logo=").append(logo);
         sb.append(", bigPic=").append(bigPic);
         sb.append(", brandStory=").append(brandStory);
         sb.append(", serialVersionUID=").append(serialVersionUID);

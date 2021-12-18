@@ -3,6 +3,7 @@ package com.ethan.mall.admin.controller;
 import com.ethan.mall.admin.domain.PmsBrandCreateParam;
 import com.ethan.mall.admin.service.IPmsBrandService;
 import com.ethan.mall.common.api.CommonData;
+import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.model.PmsBrand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

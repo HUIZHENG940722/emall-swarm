@@ -10,6 +10,13 @@
     <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="first_letter" jdbcType="VARCHAR" property="firstLetter" />
+    <result column="sort" jdbcType="BIGINT" property="sort" />
+    <result column="factory_status" jdbcType="INTEGER" property="factoryStatus" />
+    <result column="show_status" jdbcType="INTEGER" property="showStatus" />
+    <result column="product_count" jdbcType="BIGINT" property="productCount" />
+    <result column="product_comment_count" jdbcType="BIGINT" property="productCommentCount" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
     <result column="big_pic" jdbcType="VARCHAR" property="bigPic" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ethan.mall.model.PmsBrand">
@@ -75,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, tenant_id, revision, created_by, created_time, updated_by, updated_time, name, 
-    big_pic
+    first_letter, sort, factory_status, show_status, product_count, product_comment_count, 
+    logo, big_pic
   </sql>
   <sql id="Blob_Column_List">
     brand_story
@@ -134,12 +142,16 @@
     </selectKey>
     insert into pms_brand (tenant_id, revision, created_by, 
       created_time, updated_by, updated_time, 
-      name, big_pic, brand_story
-      )
+      name, first_letter, sort, 
+      factory_status, show_status, product_count, 
+      product_comment_count, logo, big_pic, 
+      brand_story)
     values (#{tenantId,jdbcType=BIGINT}, #{revision,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, 
       #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=BIGINT}, #{updatedTime,jdbcType=TIMESTAMP}, 
-      #{name,jdbcType=VARCHAR}, #{bigPic,jdbcType=VARCHAR}, #{brandStory,jdbcType=LONGVARCHAR}
-      )
+      #{name,jdbcType=VARCHAR}, #{firstLetter,jdbcType=VARCHAR}, #{sort,jdbcType=BIGINT}, 
+      #{factoryStatus,jdbcType=INTEGER}, #{showStatus,jdbcType=INTEGER}, #{productCount,jdbcType=BIGINT}, 
+      #{productCommentCount,jdbcType=BIGINT}, #{logo,jdbcType=VARCHAR}, #{bigPic,jdbcType=VARCHAR}, 
+      #{brandStory,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ethan.mall.model.PmsBrand">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -167,6 +179,27 @@
       </if>
       <if test="name != null">
         name,
+      </if>
+      <if test="firstLetter != null">
+        first_letter,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="factoryStatus != null">
+        factory_status,
+      </if>
+      <if test="showStatus != null">
+        show_status,
+      </if>
+      <if test="productCount != null">
+        product_count,
+      </if>
+      <if test="productCommentCount != null">
+        product_comment_count,
+      </if>
+      <if test="logo != null">
+        logo,
       </if>
       <if test="bigPic != null">
         big_pic,
@@ -196,6 +229,27 @@
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLetter != null">
+        #{firstLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=BIGINT},
+      </if>
+      <if test="factoryStatus != null">
+        #{factoryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="showStatus != null">
+        #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="productCount != null">
+        #{productCount,jdbcType=BIGINT},
+      </if>
+      <if test="productCommentCount != null">
+        #{productCommentCount,jdbcType=BIGINT},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
       </if>
       <if test="bigPic != null">
         #{bigPic,jdbcType=VARCHAR},
@@ -238,6 +292,27 @@
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.firstLetter != null">
+        first_letter = #{record.firstLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=BIGINT},
+      </if>
+      <if test="record.factoryStatus != null">
+        factory_status = #{record.factoryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.showStatus != null">
+        show_status = #{record.showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.productCount != null">
+        product_count = #{record.productCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.productCommentCount != null">
+        product_comment_count = #{record.productCommentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.logo != null">
+        logo = #{record.logo,jdbcType=VARCHAR},
+      </if>
       <if test="record.bigPic != null">
         big_pic = #{record.bigPic,jdbcType=VARCHAR},
       </if>
@@ -259,6 +334,13 @@
       updated_by = #{record.updatedBy,jdbcType=BIGINT},
       updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
       name = #{record.name,jdbcType=VARCHAR},
+      first_letter = #{record.firstLetter,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=BIGINT},
+      factory_status = #{record.factoryStatus,jdbcType=INTEGER},
+      show_status = #{record.showStatus,jdbcType=INTEGER},
+      product_count = #{record.productCount,jdbcType=BIGINT},
+      product_comment_count = #{record.productCommentCount,jdbcType=BIGINT},
+      logo = #{record.logo,jdbcType=VARCHAR},
       big_pic = #{record.bigPic,jdbcType=VARCHAR},
       brand_story = #{record.brandStory,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
@@ -275,6 +357,13 @@
       updated_by = #{record.updatedBy,jdbcType=BIGINT},
       updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
       name = #{record.name,jdbcType=VARCHAR},
+      first_letter = #{record.firstLetter,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=BIGINT},
+      factory_status = #{record.factoryStatus,jdbcType=INTEGER},
+      show_status = #{record.showStatus,jdbcType=INTEGER},
+      product_count = #{record.productCount,jdbcType=BIGINT},
+      product_comment_count = #{record.productCommentCount,jdbcType=BIGINT},
+      logo = #{record.logo,jdbcType=VARCHAR},
       big_pic = #{record.bigPic,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -304,6 +393,27 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="firstLetter != null">
+        first_letter = #{firstLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=BIGINT},
+      </if>
+      <if test="factoryStatus != null">
+        factory_status = #{factoryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="showStatus != null">
+        show_status = #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=BIGINT},
+      </if>
+      <if test="productCommentCount != null">
+        product_comment_count = #{productCommentCount,jdbcType=BIGINT},
+      </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
       <if test="bigPic != null">
         big_pic = #{bigPic,jdbcType=VARCHAR},
       </if>
@@ -322,6 +432,13 @@
       updated_by = #{updatedBy,jdbcType=BIGINT},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
+      first_letter = #{firstLetter,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=BIGINT},
+      factory_status = #{factoryStatus,jdbcType=INTEGER},
+      show_status = #{showStatus,jdbcType=INTEGER},
+      product_count = #{productCount,jdbcType=BIGINT},
+      product_comment_count = #{productCommentCount,jdbcType=BIGINT},
+      logo = #{logo,jdbcType=VARCHAR},
       big_pic = #{bigPic,jdbcType=VARCHAR},
       brand_story = #{brandStory,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -335,6 +452,13 @@
       updated_by = #{updatedBy,jdbcType=BIGINT},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
+      first_letter = #{firstLetter,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=BIGINT},
+      factory_status = #{factoryStatus,jdbcType=INTEGER},
+      show_status = #{showStatus,jdbcType=INTEGER},
+      product_count = #{productCount,jdbcType=BIGINT},
+      product_comment_count = #{productCommentCount,jdbcType=BIGINT},
+      logo = #{logo,jdbcType=VARCHAR},
       big_pic = #{bigPic,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
