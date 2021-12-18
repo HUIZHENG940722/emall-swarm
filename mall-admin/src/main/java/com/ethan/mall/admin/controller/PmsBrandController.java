@@ -26,11 +26,11 @@ public class PmsBrandController {
     private IPmsBrandService brandService;
     @ApiOperation(value = "根据品牌名称分页获取品牌列表")
     @GetMapping(value = "/list")
-    public CommonData<List<PmsBrand>> getList(@RequestParam(value = "keyword", required = false) String keyword,
+    public CommonData<CommonPage<PmsBrand>> getList(@RequestParam(value = "keyword", required = false) String keyword,
                                               @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                               @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         List<PmsBrand> brandList = brandService.getList(keyword, pageNum, pageSize);
-        return CommonData.success(brandList);
+        return CommonData.success(CommonPage.restPage(brandList));
     }
 
     @ApiOperation(value = "创建商品品牌")
