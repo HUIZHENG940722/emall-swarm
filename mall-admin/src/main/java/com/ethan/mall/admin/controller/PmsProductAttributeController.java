@@ -57,7 +57,7 @@ public class PmsProductAttributeController {
     }
 
     @ApiOperation("修改商品属性信息")
-    @PostMapping(value = "/update/{id}")
+    @PutMapping(value = "/update/{id}")
     public CommonData update(@PathVariable Long id, @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
         int count = productAttributeService.update(id, productAttributeCreateParam);
         if (count > 0) {

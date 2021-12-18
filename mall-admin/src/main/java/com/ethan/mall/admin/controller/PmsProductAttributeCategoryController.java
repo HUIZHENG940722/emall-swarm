@@ -45,7 +45,7 @@ public class PmsProductAttributeCategoryController {
     }
 
     @ApiOperation("修改商品类型分类")
-    @PostMapping(value = "/update/{id}")
+    @PutMapping(value = "/update/{id}")
     public CommonData update(@PathVariable Long id, @RequestParam String name) {
         int count = productAttributeCategoryService.update(id, name);
         if (count > 0) {
