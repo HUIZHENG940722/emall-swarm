@@ -1,5 +1,7 @@
 package com.ethan.mall.admin.service.impl;
 
+import com.ethan.mall.admin.dao.PmsProductAttributeCategoryDao;
+import com.ethan.mall.admin.domain.PmsProductAttributeCategoryItem;
 import com.ethan.mall.admin.service.IPmsProductAttributeCategoryService;
 import com.ethan.mall.mapper.PmsProductAttributeCategoryMapper;
 import com.ethan.mall.model.PmsProductAttributeCategory;
@@ -19,6 +21,8 @@ import java.util.List;
 public class PmsProductAttributeCategoryService implements IPmsProductAttributeCategoryService {
     @Resource
     private PmsProductAttributeCategoryMapper productAttributeCategoryMapper;
+    @Resource
+    private PmsProductAttributeCategoryDao productAttributeCategoryDao;
     @Override
     public int create(String name) {
         // 1 校验
@@ -53,5 +57,15 @@ public class PmsProductAttributeCategoryService implements IPmsProductAttributeC
         int count = productAttributeCategoryMapper.updateByPrimaryKeySelective(productAttributeCategory);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public List<PmsProductAttributeCategoryItem> getListWithAttr() {
+        // 1 校验
+        // 2 执行相应的逻辑
+        List<PmsProductAttributeCategoryItem> productAttributeCategoryItems = productAttributeCategoryDao
+                .getListWithAttr();
+        // 3 返回结果集
+        return productAttributeCategoryItems;
     }
 }

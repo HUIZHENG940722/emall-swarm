@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ethan.mall.admin.dao.PmsProductAttributeCategoryDao">
+    <resultMap id="getListWithAttrMap" type="com.ethan.mall.admin.domain.PmsProductAttributeCategoryItem">
+        <collection property="productAttributeList" columnPrefix="attr_" resultMap="com.ethan.mall.mapper.PmsProductAttributeMapper.BaseResultMap">
+
+        </collection>
+    </resultMap>
+    <select id="getListWithAttr" resultMap="getListWithAttrMap">
+        select pac.id,
+               pac.name,
+               pa.id attr_id,
+               pa.name attr_name
+        from
+             pms_product_attribute_category pac
+                 left join pms_product_attribute pa
+                     on pac.id = pa.product_attribute_category_id
+                            and pa.type = 1
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.PmsProductAttributeCategoryItem;
 import com.ethan.mall.model.PmsProductAttributeCategory;
 
 import java.util.List;
@@ -32,4 +33,10 @@ public interface IPmsProductAttributeCategoryService {
      * @return
      */
     int update(Long id, String name);
+
+    /**
+     * 获取商品类型分类及类型层级结构
+     * @return
+     */
+    List<PmsProductAttributeCategoryItem> getListWithAttr();
 }

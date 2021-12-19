@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.PmsProductAttributeCategoryItem;
 import com.ethan.mall.admin.service.IPmsProductAttributeCategoryService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
@@ -53,5 +54,13 @@ public class PmsProductAttributeCategoryController {
         } else {
             return CommonData.failed();
         }
+    }
+
+    @ApiOperation(value = "获取所有商品类型分类及分类层级结构")
+    @GetMapping(value = "/list/withAttr")
+    public CommonData<List<PmsProductAttributeCategoryItem>> getListWithAttr() {
+        List<PmsProductAttributeCategoryItem> productAttributeCategoryItems = productAttributeCategoryService
+                .getListWithAttr();
+        return CommonData.success(productAttributeCategoryItems);
     }
 }
