@@ -35,6 +35,7 @@ CREATE TABLE pms_product_category(
      product_unit VARCHAR(64) NOT NULL   COMMENT '商品单位' ,
      nav_status INT(1) NOT NULL  DEFAULT 0 COMMENT '是否显示在导航栏;0->不显示；1->显示' ,
      show_status INT(1) NOT NULL  DEFAULT 0 COMMENT '显示状态;0->不显示；1->显示' ,
+     sort bigint(11) NOT NULL  DEFAULT 0 COMMENT '排序' ,
      icon VARCHAR(255)    COMMENT '图标' ,
      keywords VARCHAR(255)    COMMENT '搜索关键字' ,
      description TEXT    COMMENT '描述' ,

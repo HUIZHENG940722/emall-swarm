@@ -47,6 +47,9 @@ public class PmsProductCategory implements Serializable {
     @ApiModelProperty(value = "显示状态;0->不显示；1->显示")
     private Integer showStatus;
 
+    @ApiModelProperty(value = "排序")
+    private Long sort;
+
     @ApiModelProperty(value = "图标")
     private String icon;
 
@@ -170,6 +173,14 @@ public class PmsProductCategory implements Serializable {
         this.showStatus = showStatus;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
     public String getIcon() {
         return icon;
     }
@@ -214,6 +225,7 @@ public class PmsProductCategory implements Serializable {
         sb.append(", productUnit=").append(productUnit);
         sb.append(", navStatus=").append(navStatus);
         sb.append(", showStatus=").append(showStatus);
+        sb.append(", sort=").append(sort);
         sb.append(", icon=").append(icon);
         sb.append(", keywords=").append(keywords);
         sb.append(", description=").append(description);
