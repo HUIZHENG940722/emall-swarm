@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.controller;
 
 import com.ethan.mall.admin.domain.PmsProductAttributeCreateParam;
+import com.ethan.mall.admin.domain.ProductCateAttrInfo;
 import com.ethan.mall.admin.service.IPmsProductAttributeService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
@@ -65,5 +66,12 @@ public class PmsProductAttributeController {
         } else {
             return CommonData.failed();
         }
+    }
+
+    @ApiOperation(value = "根据商品分类id获取商品参数及分类")
+    @GetMapping(value = "/attrInfo/{productCategoryId}")
+    public CommonData<List<ProductCateAttrInfo>> getAttrInfo(@PathVariable Long productCategoryId) {
+        List<ProductCateAttrInfo> productCateAttrInfos = productAttributeService.getAttrInfo(productCategoryId);
+        return CommonData.success(productCateAttrInfos);
     }
 }

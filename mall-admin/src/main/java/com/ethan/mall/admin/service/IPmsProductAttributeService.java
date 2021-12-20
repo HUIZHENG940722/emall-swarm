@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.PmsProductAttributeCreateParam;
+import com.ethan.mall.admin.domain.ProductCateAttrInfo;
 import com.ethan.mall.model.PmsProductAttribute;
 
 import java.util.List;
@@ -42,4 +43,11 @@ public interface IPmsProductAttributeService {
      * @return
      */
     int update(Long id, PmsProductAttributeCreateParam productAttributeCreateParam);
+
+    /**
+     * 商品分类对应的参数信息
+     * @param productCategoryId
+     * @return
+     */
+    List<ProductCateAttrInfo> getAttrInfo(Long productCategoryId);
 }

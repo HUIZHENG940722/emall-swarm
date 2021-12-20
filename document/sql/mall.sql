@@ -296,3 +296,20 @@ CREATE TABLE cms_preference_area_product_relation(
      product_id bigint(20) NOT NULL   COMMENT '商品id' ,
      PRIMARY KEY (id)
 )  COMMENT = '优选专区与产品关系表';
+
+-- ----------------------------
+-- Table structure for pms_product_category_attribute_relation
+-- ----------------------------
+DROP TABLE IF EXISTS pms_product_category_attribute_relation;
+CREATE TABLE pms_product_category_attribute_relation(
+    tenant_id bigint(20)    COMMENT '租户号' ,
+    revision bigint(20)    COMMENT '乐观锁' ,
+    created_by bigint(20)    COMMENT '创建人' ,
+    created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+    updated_by bigint(20)    COMMENT '更新人' ,
+    updated_time DATETIME    COMMENT '更新时间' ,
+    id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+    product_category_id bigint(20) NOT NULL   COMMENT '商品分类id' ,
+    product_attribute_id bigint(20) NOT NULL   COMMENT '商品类型id' ,
+    PRIMARY KEY (id)
+)  COMMENT = '商品分类类型关联表';

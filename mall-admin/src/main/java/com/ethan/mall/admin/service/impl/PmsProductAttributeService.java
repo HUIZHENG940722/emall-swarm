@@ -1,7 +1,9 @@
 package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.ethan.mall.admin.dao.PmsProductAttributeDao;
 import com.ethan.mall.admin.domain.PmsProductAttributeCreateParam;
+import com.ethan.mall.admin.domain.ProductCateAttrInfo;
 import com.ethan.mall.admin.service.IPmsProductAttributeService;
 import com.ethan.mall.mapper.PmsProductAttributeCategoryMapper;
 import com.ethan.mall.mapper.PmsProductAttributeMapper;
@@ -26,6 +28,8 @@ public class PmsProductAttributeService implements IPmsProductAttributeService {
     private PmsProductAttributeMapper productAttributeMapper;
     @Resource
     private PmsProductAttributeCategoryMapper productAttributeCategoryMapper;
+    @Resource
+    private PmsProductAttributeDao productAttributeDao;
     @Override
     public int create(PmsProductAttributeCreateParam productAttributeCreateParam) {
         // 1 校验
@@ -86,5 +90,14 @@ public class PmsProductAttributeService implements IPmsProductAttributeService {
         int count = productAttributeMapper.updateByPrimaryKeySelective(productAttribute);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public List<ProductCateAttrInfo> getAttrInfo(Long productCategoryId) {
+        // 1 校验
+        // 2 查询
+        List<ProductCateAttrInfo> productCateAttrInfos = productAttributeDao.getAttrInfo(productCategoryId);
+        // 3 返回结果集
+        return productCateAttrInfos;
     }
 }
