@@ -1,17 +1,21 @@
 package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import com.ethan.mall.admin.dao.PmsProductCategoryAttributeRelationDao;
 import com.ethan.mall.admin.dao.PmsProductCategoryDao;
 import com.ethan.mall.admin.domain.PmsProductCategoryAddParam;
 import com.ethan.mall.admin.domain.PmsProductCategoryWithChildrenItem;
 import com.ethan.mall.admin.service.IPmsProductCategoryService;
 import com.ethan.mall.mapper.PmsProductCategoryMapper;
 import com.ethan.mall.model.PmsProductCategory;
+import com.ethan.mall.model.PmsProductCategoryAttributeRelation;
 import com.ethan.mall.model.PmsProductCategoryExample;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +30,8 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
     private PmsProductCategoryMapper productCategoryMapper;
     @Resource
     private PmsProductCategoryDao productCategoryDao;
+    @Resource
+    private PmsProductCategoryAttributeRelationDao productCategoryAttributeRelationDao;
     @Override
     public List<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum) {
         // 1 校验
@@ -65,6 +71,20 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
         setCategoryLevel(productCategory);
         // 2.4 插入商品分类
         int count = productCategoryMapper.insertSelective(productCategory);
+        // 2.5 插入商品分类与商品类型关联表
+        List<Long> productAttributeIdList = productCategoryAddParam.getProductAttributeIdList();
+        List<PmsProductCategoryAttributeRelation> relationList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(productAttributeIdList)) {
+            for (Long aLong : productAttributeIdList) {
+                PmsProductCategoryAttributeRelation relation =
+                        new PmsProductCategoryAttributeRelation();
+                relation.setCreatedTime(new Date());
+                relation.setProductCategoryId(productCategory.getId());
+                relation.setProductAttributeId(aLong);
+                relationList.add(relation);
+            }
+        }
+        productCategoryAttributeRelationDao.insertList(relationList);
         // 3 返回结果集
         return count;
     }
