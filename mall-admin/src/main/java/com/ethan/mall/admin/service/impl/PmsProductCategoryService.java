@@ -69,6 +69,15 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
         return count;
     }
 
+    @Override
+    public PmsProductCategory get(Long id) {
+        // 1 校验
+        // 2 查询
+        PmsProductCategory productCategory = productCategoryMapper.selectByPrimaryKey(id);
+        // 3 返回结果集
+        return productCategory;
+    }
+
     /**
      * 设置商品分类层级
      * @param productCategory

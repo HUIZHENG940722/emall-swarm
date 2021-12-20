@@ -33,4 +33,11 @@ public interface IPmsProductCategoryService {
      * @return
      */
     int create(PmsProductCategoryAddParam productCategoryAddParam);
+
+    /**
+     * 获取商品分类
+     * @param id
+     * @return
+     */
+    PmsProductCategory get(Long id);
 }

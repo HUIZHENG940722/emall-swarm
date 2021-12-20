@@ -54,4 +54,11 @@ public class PmsProductCategoryController {
             return CommonData.failed();
         }
     }
+
+    @ApiOperation(value = "获取商品分类")
+    @GetMapping(value = "/{id}")
+    public CommonData<PmsProductCategory> get(@PathVariable Long id) {
+        PmsProductCategory productCategory = productCategoryService.get(id);
+        return CommonData.success(productCategory);
+    }
 }
