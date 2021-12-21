@@ -3,9 +3,9 @@
 
 <mapper namespace="com.ethan.mall.admin.dao.PmsProductCategoryAttributeRelationDao">
     <insert id="insertList">
-        insert into pms_product_category_attribute_relation(created_time, product_category_id, product_attribute_id)
+        insert into pms_product_category_attribute_relation(product_category_id, product_attribute_id, created_time)
         VALUES <foreach collection="list" separator="," item="item" index="index">
-               (#{item.productCategoryId}, #{item.productAttributeId})
+               (#{item.productCategoryId}, #{item.productAttributeId}, current_timestamp)
                </foreach>
     </insert>
 </mapper>

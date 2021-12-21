@@ -61,4 +61,15 @@ public class PmsProductCategoryController {
         PmsProductCategory productCategory = productCategoryService.get(id);
         return CommonData.success(productCategory);
     }
+
+    @ApiOperation(value = "更新商品分类")
+    @PutMapping(value = "/update/{id}")
+    public CommonData update(@PathVariable Long id,
+                             @Validated @RequestBody PmsProductCategoryAddParam productCategoryAddParam) {
+        int count = productCategoryService.update(id, productCategoryAddParam);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
+    }
 }
