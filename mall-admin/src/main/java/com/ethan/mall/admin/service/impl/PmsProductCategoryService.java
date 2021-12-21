@@ -87,8 +87,8 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
                 relation.setProductAttributeId(aLong);
                 relationList.add(relation);
             }
+            productCategoryAttributeRelationDao.insertList(relationList);
         }
-        productCategoryAttributeRelationDao.insertList(relationList);
         // 3 返回结果集
         return count;
     }
@@ -134,6 +134,15 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
             }
             productCategoryAttributeRelationDao.insertList(relationList);
         }
+        // 3 返回结果集
+        return count;
+    }
+
+    @Override
+    public int delete(Long id) {
+        // 1 校验
+        // 2 删除
+        int count = productCategoryMapper.deleteByPrimaryKey(id);
         // 3 返回结果集
         return count;
     }

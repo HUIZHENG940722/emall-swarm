@@ -72,4 +72,14 @@ public class PmsProductCategoryController {
         }
         return CommonData.failed();
     }
+
+    @ApiOperation(value = "删除商品分类")
+    @DeleteMapping(value = "/delete/{id}")
+    public CommonData delete(@PathVariable Long id) {
+        int count = productCategoryService.delete(id);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
+    }
 }

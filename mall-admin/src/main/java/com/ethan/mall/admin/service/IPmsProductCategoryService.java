@@ -48,4 +48,11 @@ public interface IPmsProductCategoryService {
      * @return
      */
     int update(Long id, PmsProductCategoryAddParam productCategoryAddParam);
+
+    /**
+     * 删除商品分类
+     * @param id
+     * @return
+     */
+    int delete(Long id);
 }
