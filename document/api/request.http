@@ -1,3 +1,7 @@
+GET http://localhost:8080/subject/listAll
+Accept: application/json
+
+###
 GET http://localhost:8080/aliyun/oss/initPostData
 Accept: application/json
 

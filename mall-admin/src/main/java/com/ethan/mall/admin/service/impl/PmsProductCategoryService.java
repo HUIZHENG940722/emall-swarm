@@ -111,6 +111,8 @@ public class PmsProductCategoryService implements IPmsProductCategoryService {
         productCategory.setId(id);
         // 2.1 填充商品分类信息
         productCategory.setUpdatedTime(new Date());
+        // 设置商品分类层级
+        setCategoryLevel(productCategory);
         // 2.2 更新商品分类信息
         int count = productCategoryMapper.updateByPrimaryKeySelective(productCategory);
         // 2.3 更新商品类型信息

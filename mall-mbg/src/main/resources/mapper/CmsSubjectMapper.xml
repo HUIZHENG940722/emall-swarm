@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ethan.mall.mapper.CmsSubjectMapper">
+  <resultMap id="BaseResultMap" type="com.ethan.mall.model.CmsSubject">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="revision" jdbcType="BIGINT" property="revision" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="product_count" jdbcType="BIGINT" property="productCount" />
+    <result column="recommend_status" jdbcType="INTEGER" property="recommendStatus" />
+    <result column="collect_count" jdbcType="BIGINT" property="collectCount" />
+    <result column="read_count" jdbcType="BIGINT" property="readCount" />
+    <result column="comment_count" jdbcType="BIGINT" property="commentCount" />
+    <result column="show_status" jdbcType="INTEGER" property="showStatus" />
+    <result column="forward_count" jdbcType="BIGINT" property="forwardCount" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ethan.mall.model.CmsSubject">
+    <result column="album_pics" jdbcType="LONGVARCHAR" property="albumPics" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, tenant_id, revision, created_by, created_time, updated_by, updated_time, category_id, 
+    title, pic, product_count, recommend_status, collect_count, read_count, comment_count, 
+    show_status, forward_count, category_name
+  </sql>
+  <sql id="Blob_Column_List">
+    album_pics, description, content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.ethan.mall.model.CmsSubjectExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cms_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.ethan.mall.model.CmsSubjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cms_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cms_subject
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_subject
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ethan.mall.model.CmsSubjectExample">
+    delete from cms_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ethan.mall.model.CmsSubject">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cms_subject (tenant_id, revision, created_by, 
+      created_time, updated_by, updated_time, 
+      category_id, title, pic, 
+      product_count, recommend_status, collect_count, 
+      read_count, comment_count, show_status, 
+      forward_count, category_name, album_pics, 
+      description, content)
+    values (#{tenantId,jdbcType=BIGINT}, #{revision,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=BIGINT}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{categoryId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, 
+      #{productCount,jdbcType=BIGINT}, #{recommendStatus,jdbcType=INTEGER}, #{collectCount,jdbcType=BIGINT}, 
+      #{readCount,jdbcType=BIGINT}, #{commentCount,jdbcType=BIGINT}, #{showStatus,jdbcType=INTEGER}, 
+      #{forwardCount,jdbcType=BIGINT}, #{categoryName,jdbcType=VARCHAR}, #{albumPics,jdbcType=LONGVARCHAR}, 
+      #{description,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ethan.mall.model.CmsSubject">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cms_subject
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tenantId != null">
+        tenant_id,
+      </if>
+      <if test="revision != null">
+        revision,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="productCount != null">
+        product_count,
+      </if>
+      <if test="recommendStatus != null">
+        recommend_status,
+      </if>
+      <if test="collectCount != null">
+        collect_count,
+      </if>
+      <if test="readCount != null">
+        read_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="showStatus != null">
+        show_status,
+      </if>
+      <if test="forwardCount != null">
+        forward_count,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="albumPics != null">
+        album_pics,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tenantId != null">
+        #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="revision != null">
+        #{revision,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        #{productCount,jdbcType=BIGINT},
+      </if>
+      <if test="recommendStatus != null">
+        #{recommendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="collectCount != null">
+        #{collectCount,jdbcType=BIGINT},
+      </if>
+      <if test="readCount != null">
+        #{readCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="showStatus != null">
+        #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="forwardCount != null">
+        #{forwardCount,jdbcType=BIGINT},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumPics != null">
+        #{albumPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ethan.mall.model.CmsSubjectExample" resultType="java.lang.Long">
+    select count(*) from cms_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_subject
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.tenantId != null">
+        tenant_id = #{record.tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="record.revision != null">
+        revision = #{record.revision,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdTime != null">
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+        updated_by = #{record.updatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.updatedTime != null">
+        updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pic != null">
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCount != null">
+        product_count = #{record.productCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.recommendStatus != null">
+        recommend_status = #{record.recommendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectCount != null">
+        collect_count = #{record.collectCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.readCount != null">
+        read_count = #{record.readCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentCount != null">
+        comment_count = #{record.commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.showStatus != null">
+        show_status = #{record.showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.forwardCount != null">
+        forward_count = #{record.forwardCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.categoryName != null">
+        category_name = #{record.categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.albumPics != null">
+        album_pics = #{record.albumPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update cms_subject
+    set id = #{record.id,jdbcType=BIGINT},
+      tenant_id = #{record.tenantId,jdbcType=BIGINT},
+      revision = #{record.revision,jdbcType=BIGINT},
+      created_by = #{record.createdBy,jdbcType=BIGINT},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_by = #{record.updatedBy,jdbcType=BIGINT},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      product_count = #{record.productCount,jdbcType=BIGINT},
+      recommend_status = #{record.recommendStatus,jdbcType=INTEGER},
+      collect_count = #{record.collectCount,jdbcType=BIGINT},
+      read_count = #{record.readCount,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      show_status = #{record.showStatus,jdbcType=INTEGER},
+      forward_count = #{record.forwardCount,jdbcType=BIGINT},
+      category_name = #{record.categoryName,jdbcType=VARCHAR},
+      album_pics = #{record.albumPics,jdbcType=LONGVARCHAR},
+      description = #{record.description,jdbcType=LONGVARCHAR},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_subject
+    set id = #{record.id,jdbcType=BIGINT},
+      tenant_id = #{record.tenantId,jdbcType=BIGINT},
+      revision = #{record.revision,jdbcType=BIGINT},
+      created_by = #{record.createdBy,jdbcType=BIGINT},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_by = #{record.updatedBy,jdbcType=BIGINT},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      product_count = #{record.productCount,jdbcType=BIGINT},
+      recommend_status = #{record.recommendStatus,jdbcType=INTEGER},
+      collect_count = #{record.collectCount,jdbcType=BIGINT},
+      read_count = #{record.readCount,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      show_status = #{record.showStatus,jdbcType=INTEGER},
+      forward_count = #{record.forwardCount,jdbcType=BIGINT},
+      category_name = #{record.categoryName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ethan.mall.model.CmsSubject">
+    update cms_subject
+    <set>
+      <if test="tenantId != null">
+        tenant_id = #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="revision != null">
+        revision = #{revision,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=BIGINT},
+      </if>
+      <if test="recommendStatus != null">
+        recommend_status = #{recommendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="collectCount != null">
+        collect_count = #{collectCount,jdbcType=BIGINT},
+      </if>
+      <if test="readCount != null">
+        read_count = #{readCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null">
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="showStatus != null">
+        show_status = #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="forwardCount != null">
+        forward_count = #{forwardCount,jdbcType=BIGINT},
+      </if>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumPics != null">
+        album_pics = #{albumPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ethan.mall.model.CmsSubject">
+    update cms_subject
+    set tenant_id = #{tenantId,jdbcType=BIGINT},
+      revision = #{revision,jdbcType=BIGINT},
+      created_by = #{createdBy,jdbcType=BIGINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=BIGINT},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR},
+      product_count = #{productCount,jdbcType=BIGINT},
+      recommend_status = #{recommendStatus,jdbcType=INTEGER},
+      collect_count = #{collectCount,jdbcType=BIGINT},
+      read_count = #{readCount,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      show_status = #{showStatus,jdbcType=INTEGER},
+      forward_count = #{forwardCount,jdbcType=BIGINT},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      album_pics = #{albumPics,jdbcType=LONGVARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ethan.mall.model.CmsSubject">
+    update cms_subject
+    set tenant_id = #{tenantId,jdbcType=BIGINT},
+      revision = #{revision,jdbcType=BIGINT},
+      created_by = #{createdBy,jdbcType=BIGINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=BIGINT},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR},
+      product_count = #{productCount,jdbcType=BIGINT},
+      recommend_status = #{recommendStatus,jdbcType=INTEGER},
+      collect_count = #{collectCount,jdbcType=BIGINT},
+      read_count = #{readCount,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      show_status = #{showStatus,jdbcType=INTEGER},
+      forward_count = #{forwardCount,jdbcType=BIGINT},
+      category_name = #{categoryName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

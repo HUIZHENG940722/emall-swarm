@@ -313,3 +313,32 @@ CREATE TABLE pms_product_category_attribute_relation(
     product_attribute_id bigint(20) NOT NULL   COMMENT '商品类型id' ,
     PRIMARY KEY (id)
 )  COMMENT = '商品分类类型关联表';
+
+-- ----------------------------
+-- Table structure for cms_subject
+-- ----------------------------
+DROP TABLE IF EXISTS cms_subject;
+CREATE TABLE cms_subject(
+    tenant_id bigint(20)    COMMENT '租户号' ,
+    revision bigint(20)    COMMENT '乐观锁' ,
+    created_by bigint(20)    COMMENT '创建人' ,
+    created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+    updated_by bigint(20)    COMMENT '更新人' ,
+    updated_time DATETIME    COMMENT '更新时间' ,
+    id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+    category_id bigint(20) NOT NULL   COMMENT '分类id' ,
+    title VARCHAR(255) NOT NULL   COMMENT '标题' ,
+    pic VARCHAR(255)    COMMENT '专区主图' ,
+    product_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '关联的商品数量' ,
+    recommend_status INT(1)    COMMENT '' ,
+    collect_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '' ,
+    read_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '' ,
+    comment_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '' ,
+    album_pics TEXT    COMMENT '画册图片;用分号隔开' ,
+    description TEXT    COMMENT '专题描述' ,
+    show_status INT(1) NOT NULL   COMMENT '显示状态;0->不显示；1->显示' ,
+    content TEXT    COMMENT '' ,
+    forward_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '转发数' ,
+    category_name VARCHAR(64)    COMMENT '专题分类名称' ,
+    PRIMARY KEY (id)
+)  COMMENT = '专题表';
