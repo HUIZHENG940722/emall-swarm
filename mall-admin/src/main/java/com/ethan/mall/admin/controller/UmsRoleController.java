@@ -35,10 +35,20 @@ public class UmsRoleController {
 
     @ApiOperation(value = "添加角色")
     @PostMapping(value = "/create")
-    public CommonData<UmsRole> create(@RequestBody UmsRole role) {
+    public CommonData<Integer> create(@RequestBody UmsRole role) {
         int count = roleService.create(role);
         if (count > 0) {
-            return CommonData.success(role);
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
+    }
+
+    @ApiOperation(value = "更新角色信息")
+    @PutMapping(value = "/update/{id}")
+    public CommonData<Integer> update(@PathVariable Long id, @RequestBody UmsRole role) {
+        int count = roleService.update(id, role);
+        if (count > 0) {
+            return CommonData.success(count);
         }
         return CommonData.failed();
     }

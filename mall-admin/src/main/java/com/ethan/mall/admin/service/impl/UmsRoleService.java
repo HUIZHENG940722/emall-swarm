@@ -49,4 +49,15 @@ public class UmsRoleService implements IUmsRoleService {
         // 3 返回结果集
         return count;
     }
+
+    @Override
+    public int update(Long id, UmsRole role) {
+        // 1 校验
+        // 2 更新信息
+        role.setId(id);
+        role.setUpdatedTime(new Date());
+        int count = roleMapper.updateByPrimaryKeySelective(role);
+        // 3 返回结果集
+        return count;
+    }
 }

@@ -25,4 +25,12 @@ public interface IUmsRoleService {
      * @return
      */
     int create(UmsRole role);
+
+    /**
+     * 更新角色信息
+     * @param id
+     * @param role
+     * @return
+     */
+    int update(Long id, UmsRole role);
 }
