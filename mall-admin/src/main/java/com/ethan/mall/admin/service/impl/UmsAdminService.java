@@ -77,4 +77,20 @@ public class UmsAdminService implements IUmsAdminService {
         // 3 返回结果集
         return adminList;
     }
+
+    @Override
+    public int update(Long id, UmsAdminRegisterParam adminRegisterParam) {
+        // 1 校验
+        // 2 更新
+        // 2.1 初始化初始数据
+        UmsAdmin admin = new UmsAdmin();
+        BeanUtil.copyProperties(adminRegisterParam, admin);
+        admin.setId(id);
+        // 2.2 初始化更新时间
+        admin.setUpdatedTime(new Date());
+        // 2.3 更新数据
+        int count = adminMapper.updateByPrimaryKey(admin);
+        // 3 返回结果集
+        return count;
+    }
 }

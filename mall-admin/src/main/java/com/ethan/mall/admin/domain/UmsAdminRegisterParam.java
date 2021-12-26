@@ -28,4 +28,6 @@ public class UmsAdminRegisterParam {
     private String nickName;
     @ApiModelProperty(value = "备注")
     private String note;
+    @ApiModelProperty(value = "启用状态")
+    private Integer status;
 }

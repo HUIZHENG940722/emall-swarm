@@ -43,4 +43,14 @@ public class UmsAdminController {
         List<UmsAdmin> adminList = adminService.getList(keyword, pageSize, pageNum);
         return CommonData.success(CommonPage.restPage(adminList));
     }
+
+    @ApiOperation(value = "修改指定用户信息")
+    @PutMapping(value = "/update/{id}")
+    public CommonData update(@PathVariable Long id, @RequestBody UmsAdminRegisterParam adminRegisterParam) {
+        int count = adminService.update(id, adminRegisterParam);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
+    }
 }

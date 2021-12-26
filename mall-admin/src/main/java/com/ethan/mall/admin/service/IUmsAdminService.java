@@ -26,4 +26,12 @@ public interface IUmsAdminService {
      * @return
      */
     List<UmsAdmin> getList(String keyword, Integer pageSize, Integer pageNum);
+
+    /**
+     * 更新指定用户信息
+     * @param id
+     * @param adminRegisterParam
+     * @return
+     */
+    int update(Long id, UmsAdminRegisterParam adminRegisterParam);
 }
