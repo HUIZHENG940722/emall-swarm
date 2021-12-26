@@ -16,15 +16,21 @@ public interface UmsAdminMapper {
 
     int insertSelective(UmsAdmin record);
 
+    List<UmsAdmin> selectByExampleWithBLOBs(UmsAdminExample example);
+
     List<UmsAdmin> selectByExample(UmsAdminExample example);
 
     UmsAdmin selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") UmsAdmin record, @Param("example") UmsAdminExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") UmsAdmin record, @Param("example") UmsAdminExample example);
+
     int updateByExample(@Param("record") UmsAdmin record, @Param("example") UmsAdminExample example);
 
     int updateByPrimaryKeySelective(UmsAdmin record);
+
+    int updateByPrimaryKeyWithBLOBs(UmsAdmin record);
 
     int updateByPrimaryKey(UmsAdmin record);
 }

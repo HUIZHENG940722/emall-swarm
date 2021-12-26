@@ -52,9 +52,8 @@ public class UmsAdminService implements IUmsAdminService {
         admin.setUsername(adminRegisterParam.getUsername());
         BeanUtil.copyProperties(adminRegisterParam, admin);
         // 2.2 设置创建时间
-        admin.setCreateTime(new Date());
-        // 2.3 设置为启用状态
-        admin.setStatus(1);
+        admin.setCreatedTime(new Date());
+        // 2.3 插入用户信息
         int i = adminMapper.insertSelective(admin);
         // 3 返回结果集
         return admin;

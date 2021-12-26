@@ -3,6 +3,7 @@ package com.ethan.mall.admin.controller;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.api.CommonData;
+import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.model.UmsAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,10 +37,10 @@ public class UmsAdminController {
 
     @ApiOperation(value = "名称分页查询用户列表")
     @GetMapping(value = "/list")
-    public CommonData<List<UmsAdmin>> getList(@RequestParam(value = "keyword", required = false) String keyword,
-                                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+    public CommonData<CommonPage<UmsAdmin>> getList(@RequestParam(value = "keyword", required = false) String keyword,
+                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<UmsAdmin> adminList = adminService.getList(keyword, pageSize, pageNum);
-        return CommonData.success(adminList);
+        return CommonData.success(CommonPage.restPage(adminList));
     }
 }
