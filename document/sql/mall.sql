@@ -349,3 +349,23 @@ CREATE TABLE ums_admin(
       status INT(1) NOT NULL  DEFAULT 0 COMMENT '账号启用状态;0->未启用；1->已启用' ,
       PRIMARY KEY (id)
 )  COMMENT = '后台用户表';
+
+-- ----------------------------
+-- Table structure for ums_role
+-- ----------------------------
+DROP TABLE IF EXISTS ums_role;
+CREATE TABLE ums_role(
+     tenant_id bigint(20)    COMMENT '租户号' ,
+     revision bigint(20)    COMMENT '乐观锁' ,
+     created_by bigint(20)    COMMENT '创建人' ,
+     created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+     updated_by bigint(20)    COMMENT '更新人' ,
+     updated_time DATETIME    COMMENT '更新时间' ,
+     id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+     name VARCHAR(64) NOT NULL   COMMENT '角色名称' ,
+     description VARCHAR(255)    COMMENT '角色描述' ,
+     admin_count bigint(11) NOT NULL  DEFAULT 0 COMMENT '后台用户数量' ,
+     status INT(1) NOT NULL  DEFAULT 1 COMMENT '启用状态;0->禁用；1->启用' ,
+     sort bigint(11) NOT NULL  DEFAULT 0 COMMENT '排序' ,
+     PRIMARY KEY (id)
+)  COMMENT = '后台用户角色表';

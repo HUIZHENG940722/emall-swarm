@@ -89,7 +89,7 @@ public class UmsAdminService implements IUmsAdminService {
         // 2.2 初始化更新时间
         admin.setUpdatedTime(new Date());
         // 2.3 更新数据
-        int count = adminMapper.updateByPrimaryKey(admin);
+        int count = adminMapper.updateByPrimaryKeySelective(admin);
         // 3 返回结果集
         return count;
     }

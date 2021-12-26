@@ -1,5 +1,6 @@
 package com.ethan.mall.common.api;
 
+import cn.hutool.core.collection.CollUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.Data;
 
