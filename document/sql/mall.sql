@@ -369,3 +369,25 @@ CREATE TABLE ums_role(
      sort bigint(11) NOT NULL  DEFAULT 0 COMMENT '排序' ,
      PRIMARY KEY (id)
 )  COMMENT = '后台用户角色表';
+
+-- ----------------------------
+-- Table structure for ums_menu
+-- ----------------------------
+DROP TABLE IF EXISTS ums_menu;
+CREATE TABLE ums_menu(
+     tenant_id bigint(20)    COMMENT '租户号' ,
+     revision bigint(20)    COMMENT '乐观锁' ,
+     created_by bigint(20)    COMMENT '创建人' ,
+     created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+     updated_by bigint(20)    COMMENT '更新人' ,
+     updated_time DATETIME    COMMENT '更新时间' ,
+     id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键' ,
+     parent_id bigint(20) NOT NULL   COMMENT '父级id' ,
+     title VARCHAR(64) NOT NULL   COMMENT '菜单名称' ,
+     level INT(1) NOT NULL  DEFAULT 0 COMMENT '菜单级数' ,
+     sort bigint(11) NOT NULL  DEFAULT 0 COMMENT '菜单排序' ,
+     name VARCHAR(64) NOT NULL   COMMENT '前端名称' ,
+     icon VARCHAR(255)    COMMENT '前端图标' ,
+     hidden INT(1) NOT NULL  DEFAULT 1 COMMENT '前端隐藏;0->隐藏；1->显示' ,
+     PRIMARY KEY (id)
+)  COMMENT = '后台菜单表';
