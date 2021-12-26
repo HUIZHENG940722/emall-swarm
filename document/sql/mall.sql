@@ -1,20 +1,3 @@
--- ----------------------------
--- Table structure for ums_admin
--- ----------------------------
-drop table if exists `ums_admin`;
-create table `ums_admin`(
-    `id` bigint(20) not null comment '记录id' auto_increment primary key,
-    `username` varchar(64) not null comment '用户名',
-    `password` varchar(64) not null comment '密码',
-    `icon` varchar(500) comment '头像',
-    `email` varchar(100) comment '邮箱',
-    `nick_name` varchar(200) comment '昵称',
-    `note` varchar(500) comment '备注信息',
-    `create_time` datetime not null comment '创建时间',
-    `login_time` datetime comment '最后登录时间',
-    `status` int(1) default 1 comment '账号启用状态：0->禁用；1->启用'
-) engine=InnoDB auto_increment=1 default charset=utf8 comment='后台用户表';
-
 # 商品模块管理
 -- ----------------------------
 -- Table structure for pms_product_category
@@ -342,3 +325,27 @@ CREATE TABLE cms_subject(
     category_name VARCHAR(64)    COMMENT '专题分类名称' ,
     PRIMARY KEY (id)
 )  COMMENT = '专题表';
+
+# 权限模块
+-- ----------------------------
+-- Table structure for ums_admin
+-- ----------------------------
+DROP TABLE IF EXISTS ums_admin;
+CREATE TABLE ums_admin(
+      tenant_id bigint(20)    COMMENT '租户号' ,
+      revision bigint(20)    COMMENT '乐观锁' ,
+      created_by bigint(20)    COMMENT '创建人' ,
+      created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+      updated_by bigint(20)    COMMENT '更新人' ,
+      updated_time DATETIME    COMMENT '更新时间' ,
+      id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+      username VARCHAR(64) NOT NULL   COMMENT '用户名' ,
+      password VARCHAR(64) NOT NULL   COMMENT '密码' ,
+      icon VARCHAR(255)    COMMENT '头像' ,
+      email VARCHAR(64)    COMMENT '邮箱' ,
+      nick_name VARCHAR(64)    COMMENT '昵称' ,
+      note TEXT    COMMENT '备注' ,
+      login_time DATETIME    COMMENT '登录时间' ,
+      status INT(1) NOT NULL  DEFAULT 0 COMMENT '账号启用状态;0->未启用；1->已启用' ,
+      PRIMARY KEY (id)
+)  COMMENT = '后台用户表';

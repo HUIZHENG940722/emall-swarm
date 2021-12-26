@@ -7,12 +7,10 @@ import com.ethan.mall.model.UmsAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author ethan
@@ -34,5 +32,14 @@ public class UmsAdminController {
             return CommonData.failed();
         }
         return CommonData.success(admin);
+    }
+
+    @ApiOperation(value = "名称分页查询用户列表")
+    @GetMapping(value = "/list")
+    public CommonData<List<UmsAdmin>> getList(@RequestParam(value = "keyword", required = false) String keyword,
+                                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        List<UmsAdmin> adminList = adminService.getList(keyword, pageSize, pageNum);
+        return CommonData.success(adminList);
     }
 }

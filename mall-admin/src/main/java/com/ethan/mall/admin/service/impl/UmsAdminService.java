@@ -9,9 +9,10 @@ import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsAdminExample;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 public class UmsAdminService implements IUmsAdminService {
-    @Autowired
+    @Resource
     private UmsAdminMapper adminMapper;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
@@ -57,5 +58,24 @@ public class UmsAdminService implements IUmsAdminService {
         int i = adminMapper.insertSelective(admin);
         // 3 返回结果集
         return admin;
+    }
+
+    @Override
+    public List<UmsAdmin> getList(String keyword, Integer pageSize, Integer pageNum) {
+        // 1 校验
+        // 2 查询
+        // 1.1 开启分页
+        PageHelper.startPage(pageNum, pageSize);
+        // 1.2 拼装查询条件
+        UmsAdminExample adminExample = new UmsAdminExample();
+        if (StrUtil.isNotBlank(keyword)) {
+            UmsAdminExample.Criteria criteria = adminExample.createCriteria();
+            criteria.andUsernameLike("%" + keyword + '%');
+            adminExample.or(adminExample.createCriteria().andNickNameLike("%" + keyword + "%"));
+        }
+        // 1.3 执行查询
+        List<UmsAdmin> adminList = adminMapper.selectByExample(adminExample);
+        // 3 返回结果集
+        return adminList;
     }
 }
