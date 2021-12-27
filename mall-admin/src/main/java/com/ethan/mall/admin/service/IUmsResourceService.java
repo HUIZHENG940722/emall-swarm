@@ -2,6 +2,8 @@ package com.ethan.mall.admin.service;
 
 import com.ethan.mall.model.UmsResource;
 
+import java.util.List;
+
 /**
  * @author ethan
  * @Date 9:28 PM 2021/12/27
@@ -14,4 +16,16 @@ public interface IUmsResourceService {
      * @return
      */
     int create(UmsResource umsResource);
+
+    /**
+     * 分页模糊查询资源列表
+     * @param categoryId
+     * @param nameKeyword
+     * @param urlKeyword
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    List<UmsResource> getList(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,
+                              Integer pageNum);
 }
