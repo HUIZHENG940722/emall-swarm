@@ -18,4 +18,11 @@ public interface IUmsMenuService {
      * @return
      */
     List<UmsMenu> getList(Long parentId, Integer pageSize, Integer pageNum);
+
+    /**
+     * 创建后台菜单
+     * @param menu
+     * @return
+     */
+    int create(UmsMenu menu);
 }

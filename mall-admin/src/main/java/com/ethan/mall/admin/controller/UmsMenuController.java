@@ -30,4 +30,14 @@ public class UmsMenuController {
         List<UmsMenu> menuList = menuService.getList(parentId, pageSize, pageNum);
         return CommonData.success(CommonPage.restPage(menuList));
     }
+
+    @ApiOperation(value = "创建菜单")
+    @PostMapping(value = "/create")
+    public CommonData<Integer> create(@RequestBody UmsMenu menu) {
+        int count = menuService.create(menu);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
+    }
 }

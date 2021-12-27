@@ -391,3 +391,39 @@ CREATE TABLE ums_menu(
      hidden INT(1) NOT NULL  DEFAULT 1 COMMENT '前端隐藏;0->隐藏；1->显示' ,
      PRIMARY KEY (id)
 )  COMMENT = '后台菜单表';
+
+-- ----------------------------
+-- Table structure for ums_resource_category
+-- ----------------------------
+DROP TABLE IF EXISTS ums_resource_category;
+CREATE TABLE ums_resource_category(
+      tenant_id bigint(20)    COMMENT '租户号' ,
+      revision bigint(20)    COMMENT '乐观锁' ,
+      created_by bigint(20)    COMMENT '创建人' ,
+      created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+      updated_by bigint(20)    COMMENT '更新人' ,
+      updated_time DATETIME    COMMENT '更新时间' ,
+      id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+      name VARCHAR(64) NOT NULL   COMMENT '分类名称' ,
+      sort bigint(11) NOT NULL  DEFAULT 0 COMMENT '排序' ,
+      PRIMARY KEY (id)
+)  COMMENT = '资源分类表';
+
+-- ----------------------------
+-- Records of ums_resource
+-- ----------------------------
+DROP TABLE IF EXISTS ums_resource;
+CREATE TABLE ums_resource(
+     tenant_id bigint(20)    COMMENT '租户号' ,
+     revision bigint(20)    COMMENT '乐观锁' ,
+     created_by bigint(20)    COMMENT '创建人' ,
+     created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+     updated_by bigint(20)    COMMENT '更新人' ,
+     updated_time DATETIME    COMMENT '更新时间' ,
+     id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+     name VARCHAR(64) NOT NULL   COMMENT '资源名称' ,
+     url VARCHAR(255) NOT NULL   COMMENT '资源路径' ,
+     description TEXT    COMMENT '资源描述' ,
+     category_id bigint(20) NOT NULL   COMMENT '资源分类id' ,
+     PRIMARY KEY (id)
+)  COMMENT = '后台资源表';
