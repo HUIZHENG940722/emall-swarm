@@ -48,7 +48,7 @@ public class UmsResourceCategoryService implements IUmsResourceCategoryService {
         // 2.1 初始化
         resource.setId(id);
         resource.setUpdatedTime(new Date());
-        int count = resourceCategoryMapper.insertSelective(resource);
+        int count = resourceCategoryMapper.updateByPrimaryKeySelective(resource);
         // 3 返回结果集
         return count;
     }
