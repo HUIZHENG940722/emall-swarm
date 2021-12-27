@@ -2,6 +2,8 @@ package com.ethan.mall.admin.service;
 
 import com.ethan.mall.model.UmsResourceCategory;
 
+import java.util.List;
+
 /**
  * @author ethan
  * @Date 8:26 AM 2021/12/27
@@ -14,4 +16,10 @@ public interface IUmsResourceCategoryService {
      * @return
      */
     int create(UmsResourceCategory resourceCategory);
+
+    /**
+     * 查询所有的资源分类
+     * @return
+     */
+    List<UmsResourceCategory> getListAll();
 }

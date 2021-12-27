@@ -5,12 +5,10 @@ import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.model.UmsResourceCategory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author ethan
@@ -34,5 +32,10 @@ public class UmsResourceCategoryController {
         return CommonData.failed();
     }
 
-
+    @ApiOperation(value = "查询所有的资源分类")
+    @GetMapping(value = "/listAll")
+    public CommonData<List<UmsResourceCategory>> getListAll() {
+        List<UmsResourceCategory> resourceCategoryList = resourceCategoryService.getListAll();
+        return CommonData.success(resourceCategoryList);
+    }
 }
