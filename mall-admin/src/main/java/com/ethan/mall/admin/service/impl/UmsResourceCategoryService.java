@@ -40,4 +40,16 @@ public class UmsResourceCategoryService implements IUmsResourceCategoryService {
         // 3 返回结果集
         return resourceCategoryList;
     }
+
+    @Override
+    public int update(Long id, UmsResourceCategory resource) {
+        // 1 校验
+        // 2 更新逻辑
+        // 2.1 初始化
+        resource.setId(id);
+        resource.setUpdatedTime(new Date());
+        int count = resourceCategoryMapper.insertSelective(resource);
+        // 3 返回结果集
+        return count;
+    }
 }

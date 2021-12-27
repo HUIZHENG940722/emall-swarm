@@ -22,4 +22,12 @@ public interface IUmsResourceCategoryService {
      * @return
      */
     List<UmsResourceCategory> getListAll();
+
+    /**
+     * 更新资源分类
+     * @param id
+     * @param resource
+     * @return
+     */
+    int update(Long id, UmsResourceCategory resource);
 }

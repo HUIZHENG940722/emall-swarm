@@ -5,6 +5,7 @@ import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.model.UmsResourceCategory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,5 +38,15 @@ public class UmsResourceCategoryController {
     public CommonData<List<UmsResourceCategory>> getListAll() {
         List<UmsResourceCategory> resourceCategoryList = resourceCategoryService.getListAll();
         return CommonData.success(resourceCategoryList);
+    }
+
+    @ApiOperation(value = "更新指定资源分类")
+    @PutMapping(value = "/update/{id}")
+    public CommonData<Integer> update(@PathVariable Long id, @RequestBody UmsResourceCategory resource) {
+        int count = resourceCategoryService.update(id, resource);
+        if (count > 0) {
+            return CommonData.success(count);
+        }
+        return CommonData.failed();
     }
 }
