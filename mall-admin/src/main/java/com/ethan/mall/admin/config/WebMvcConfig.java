@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Description 跨域配置
  */
 @Configuration
-@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
