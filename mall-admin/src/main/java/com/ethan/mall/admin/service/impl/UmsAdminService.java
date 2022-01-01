@@ -71,11 +71,12 @@ public class UmsAdminService implements IUmsAdminService {
         // 2 插入后台用户
         // 2.1 赋值基础数据
         UmsAdmin admin = new UmsAdmin();
-        admin.setUsername(adminRegisterParam.getUsername());
         BeanUtil.copyProperties(adminRegisterParam, admin);
         // 2.2 设置创建时间
         admin.setCreatedTime(new Date());
-        // 2.3 插入用户信息
+        // 2.3 对用户密码进行加密
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        // 2.4 插入用户信息
         int i = adminMapper.insertSelective(admin);
         // 3 返回结果集
         return admin;
