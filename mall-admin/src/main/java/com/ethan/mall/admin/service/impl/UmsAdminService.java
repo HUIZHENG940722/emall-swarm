@@ -126,7 +126,7 @@ public class UmsAdminService implements IUmsAdminService {
         if (admin != null) {
             List<UmsRole> roleList = getRoleList(admin.getId());
             LoginUser loginUser = new LoginUser();
-            BeanUtil.copyProperties(username, loginUser);
+            BeanUtil.copyProperties(admin, loginUser);
             if (CollUtil.isNotEmpty(roleList)) {
                 List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_"
                         + item.getName()).collect(Collectors.toList());
