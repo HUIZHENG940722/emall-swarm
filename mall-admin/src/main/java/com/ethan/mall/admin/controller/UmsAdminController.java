@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.UmsAdminLoginParam;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.api.CommonData;
@@ -8,11 +9,14 @@ import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ethan
@@ -25,6 +29,11 @@ import java.util.List;
 public class UmsAdminController {
     @Resource
     private IUmsAdminService adminService;
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
 
     @ApiOperation(value = "注册用户")
     @PostMapping(value = "/register")
@@ -62,5 +71,16 @@ public class UmsAdminController {
         return loginUser;
     }
 
-
+    @ApiOperation(value = "登录获取token")
+    @PostMapping(value = "/login")
+    public CommonData login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
+        String token = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
+        if (token == null) {
+            return CommonData.failed("用户名或密码错误");
+        }
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        return CommonData.success(tokenMap);
+    }
 }

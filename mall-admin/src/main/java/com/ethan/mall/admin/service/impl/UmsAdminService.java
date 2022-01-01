@@ -122,6 +122,14 @@ public class UmsAdminService implements IUmsAdminService {
         return null;
     }
 
+    @Override
+    public String login(String username, String password) {
+        // 1 校验
+        // 2 获取token信息
+        // 3 返回结果
+        return null;
+    }
+
 
     @Override
     public List<UmsRole> getRoleList(Long adminId) {

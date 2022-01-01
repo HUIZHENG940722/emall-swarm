@@ -58,4 +58,12 @@ public interface IUmsAdminService {
      * @return
      */
     LoginUser loadUserByUsername(String username);
+
+    /**
+     * 用户登录获取token
+     * @param username
+     * @param password
+     * @return
+     */
+    String login(String username, String password);
 }
