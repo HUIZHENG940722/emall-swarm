@@ -3,6 +3,7 @@ package com.ethan.mall.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ethan.mall.admin.config.AuthService;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
@@ -12,7 +13,13 @@ import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsAdminExample;
 import com.ethan.mall.model.UmsRole;
+import com.ethan.mall.security.component.JwtTokenUtil;
 import com.github.pagehelper.PageHelper;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +38,15 @@ public class UmsAdminService implements IUmsAdminService {
     private UmsAdminMapper adminMapper;
 
     @Resource
+    private AuthService authService;
+
+    @Resource
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
+    @Resource
+    private PasswordEncoder passwordEncoder;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -126,8 +141,16 @@ public class UmsAdminService implements IUmsAdminService {
     public String login(String username, String password) {
         // 1 校验
         // 2 获取token信息
+        UserDetails userDetails = authService.loadUserByUsername(username);
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new BadCredentialsException("密码不正确");
+        }
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenUtil.generateToken(userDetails);
         // 3 返回结果
-        return null;
+        return token;
     }
 
 

@@ -1,9 +1,8 @@
-package com.ethan.mall.security.config;
+package com.ethan.mall.admin.config;
 
 import com.ethan.mall.security.component.RestAuthenticationEntryPoint;
 import com.ethan.mall.security.component.RestfulAccessDeniedHandler;
 import com.ethan.mall.security.filter.JwtAuthenticationTokenFilter;
-import com.ethan.mall.security.service.impl.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;

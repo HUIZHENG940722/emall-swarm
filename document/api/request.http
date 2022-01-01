@@ -1,3 +1,13 @@
+###
+POST http://localhost:8080/admin/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+###
 GET http://localhost:8080/subject/listAll
 Accept: application/json
 
