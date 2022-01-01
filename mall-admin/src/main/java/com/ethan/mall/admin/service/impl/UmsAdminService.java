@@ -3,18 +3,22 @@ package com.ethan.mall.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
+import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsAdminExample;
+import com.ethan.mall.model.UmsRole;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ethan
@@ -25,6 +29,9 @@ import java.util.List;
 public class UmsAdminService implements IUmsAdminService {
     @Resource
     private UmsAdminMapper adminMapper;
+
+    @Resource
+    private UmsAdminRoleRelationDao adminRoleRelationDao;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -92,5 +99,52 @@ public class UmsAdminService implements IUmsAdminService {
         int count = adminMapper.updateByPrimaryKeySelective(admin);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public LoginUser loadUserByUsername(String username) {
+        // 1 校验
+        // 2 查询
+        // 2.1 查询后台用户
+        UmsAdmin admin = getByUsername(username);
+        if (admin != null) {
+            List<UmsRole> roleList = getRoleList(admin.getId());
+            LoginUser loginUser = new LoginUser();
+            BeanUtil.copyProperties(username, loginUser);
+            if (CollUtil.isNotEmpty(roleList)) {
+                List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_"
+                        + item.getName()).collect(Collectors.toList());
+                loginUser.setRoles(roleStrList);
+            }
+            return loginUser;
+        }
+        // 3 返回结果集
+        return null;
+    }
+
+
+    @Override
+    public List<UmsRole> getRoleList(Long adminId) {
+        // 1 校验
+        // 2 查询
+        List<UmsRole> roleList = adminRoleRelationDao.getRoleList(adminId);
+        // 3 返回结果集
+        return roleList;
+    }
+
+    @Override
+    public UmsAdmin getByUsername(String username) {
+        // 1 校验
+        // 2 查询
+        // 2.1 拼装查询条件
+        UmsAdminExample adminExample = new UmsAdminExample();
+        adminExample.createCriteria().andUsernameEqualTo(username);
+        // 2.2 执行查询
+        List<UmsAdmin> umsAdmins = adminMapper.selectByExample(adminExample);
+        // 3 返回结果集
+        if (CollUtil.isNotEmpty(umsAdmins)) {
+            return umsAdmins.get(0);
+        }
+        return null;
     }
 }

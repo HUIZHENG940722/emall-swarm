@@ -4,6 +4,7 @@ import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
+import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,4 +54,13 @@ public class UmsAdminController {
         }
         return CommonData.failed();
     }
+
+    @ApiOperation(value = "根据用户名获取登录用户信息")
+    @GetMapping(value = "/loadByUsername")
+    public LoginUser loadUserByUsername(@RequestParam(value = "username") String username) {
+        LoginUser loginUser = adminService.loadUserByUsername(username);
+        return loginUser;
+    }
+
+
 }

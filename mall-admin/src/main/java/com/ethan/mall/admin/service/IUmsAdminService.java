@@ -1,7 +1,9 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
+import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
+import com.ethan.mall.model.UmsRole;
 
 import java.util.List;
 
@@ -34,4 +36,26 @@ public interface IUmsAdminService {
      * @return
      */
     int update(Long id, UmsAdminRegisterParam adminRegisterParam);
+
+
+    /**
+     * 根据用户名获取后台用户
+     * @param username
+     * @return
+     */
+    UmsAdmin getByUsername(String username);
+
+    /**
+     * 根据后台用户id获取角色列表
+     * @param adminId
+     * @return
+     */
+    List<UmsRole> getRoleList(Long adminId);
+
+    /**
+     * 根据用户名获取登录用户信息
+     * @param username
+     * @return
+     */
+    LoginUser loadUserByUsername(String username);
 }
