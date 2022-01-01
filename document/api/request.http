@@ -3,12 +3,13 @@ POST http://localhost:8080/admin/login
 Content-Type: application/json
 
 {
-  "username": "admin",
+  "username": "test",
   "password": "123456"
 }
 
 ###
 GET http://localhost:8080/subject/listAll
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiY3JlYXRlZCI6MTY0MTA1MDMwNzE4MSwiZXhwIjoxNjQxMDUwOTExfQ.Ed-YG-6QHQA3C6ULepychBLtfnQXpe8IB35d-VYVhbmeXhFPogtWTnZZZrHwTfZzu5Q_EMfuicnU3qONTZ2pkw
 Accept: application/json
 
 ###
@@ -17,6 +18,7 @@ Accept: application/json
 
 ###
 GET http://localhost:8080/brand/list?pageNum=1&pageSize=10
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiY3JlYXRlZCI6MTY0MTA0OTY3MDMzOCwiZXhwIjoxNjQxMDUwMjc1fQ.peLRvu9xMk0gTLWDCmEuiGnWVVBlxXMbtZSbUm78wow6tVola5oYwzuPQ760FiEqDvBV8EYCT0wQwTTre09ONg
 Accept: application/json
 
 ###
