@@ -150,6 +150,8 @@ public class UmsAdminService implements IUmsAdminService {
                 null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenUtil.generateToken(userDetails);
+        // 更新最后一次登录时间
+        int count = updateLoginTimeByUsername(username);
         // 3 返回结果
         return token;
     }
@@ -178,5 +180,21 @@ public class UmsAdminService implements IUmsAdminService {
             return umsAdmins.get(0);
         }
         return null;
+    }
+
+    /**
+     * 根据用户名更新登录时间
+     * @param username
+     */
+    private int updateLoginTimeByUsername(String username) {
+        // 1 校验
+        // 2 执行更新逻辑
+        UmsAdmin admin = new UmsAdmin();
+        admin.setLoginTime(new Date());
+        UmsAdminExample adminExample = new UmsAdminExample();
+        adminExample.createCriteria().andUsernameEqualTo(username);
+        int count = adminMapper.updateByExampleSelective(admin, adminExample);
+        // 3 返回结果集
+        return count;
     }
 }
