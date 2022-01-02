@@ -4,6 +4,7 @@ import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.model.UmsMenu;
+import com.ethan.mall.model.UmsResource;
 import com.ethan.mall.model.UmsRole;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,5 +67,19 @@ public class UmsRoleController {
     public CommonData<List<UmsMenu>> menuList(@PathVariable Long roleId) {
         List<UmsMenu> menuList = roleService.menuList(roleId);
         return CommonData.success(menuList);
+    }
+
+    @ApiOperation("获取角色相关资源")
+    @GetMapping(value = "/listResource/{roleId}")
+    public CommonData<List<UmsResource>> listResources(@PathVariable Long roleId) {
+        List<UmsResource> resourceList = roleService.listResources(roleId);
+        return CommonData.success(resourceList);
+    }
+
+    @ApiOperation("给角色分配资源")
+    @PostMapping(value = "/allocResource")
+    public CommonData addResources(@RequestParam Long roleId, @RequestParam List<Long> resourceIds) {
+        int count = roleService.allocResource(roleId, resourceIds);
+        return CommonData.success(count);
     }
 }

@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.model.UmsMenu;
+import com.ethan.mall.model.UmsResource;
 import com.ethan.mall.model.UmsRole;
 
 import java.util.List;
@@ -49,4 +50,19 @@ public interface IUmsRoleService {
      * @return
      */
     List<UmsMenu> menuList(Long roleId);
+
+    /**
+     * 获取角色相关的资源列表
+     * @param roleId
+     * @return
+     */
+    List<UmsResource> listResources(Long roleId);
+
+    /**
+     * 给角色分配资源
+     * @param roleId
+     * @param resourceIds
+     * @return
+     */
+    int allocResource(Long roleId, List<Long> resourceIds);
 }

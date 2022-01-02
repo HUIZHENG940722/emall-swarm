@@ -461,3 +461,20 @@ CREATE TABLE ums_role_menu_relation(
    menu_id bigint(20) NOT NULL   COMMENT '菜单id' ,
    PRIMARY KEY (id)
 )  COMMENT = '后台角色菜单关联表';
+
+-- ----------------------------
+-- Table structure for ums_role_resource_relation
+-- ----------------------------
+DROP TABLE IF EXISTS ums_role_resource_relation;
+CREATE TABLE ums_role_resource_relation(
+   tenant_id bigint(20)    COMMENT '租户号' ,
+   revision bigint(20)    COMMENT '乐观锁' ,
+   created_by bigint(20)    COMMENT '创建人' ,
+   created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+   updated_by bigint(20)    COMMENT '更新人' ,
+   updated_time DATETIME    COMMENT '更新时间' ,
+   id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+   role_id bigint(20) NOT NULL   COMMENT '角色id' ,
+   resource_id bigint(20) NOT NULL   COMMENT '资源id' ,
+   PRIMARY KEY (id)
+)  COMMENT = '后台角色资源关联表';

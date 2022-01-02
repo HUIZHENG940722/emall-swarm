@@ -5,6 +5,7 @@ import com.ethan.mall.admin.dao.UmsRoleDao;
 import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.mapper.UmsRoleMapper;
 import com.ethan.mall.mapper.UmsRoleMenuRelationMapper;
+import com.ethan.mall.mapper.UmsRoleResourceRelationMapper;
 import com.ethan.mall.model.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class UmsRoleService implements IUmsRoleService {
     private UmsRoleMenuRelationMapper roleMenuRelationMapper;
     @Resource
     private UmsRoleDao roleDao;
+    @Resource
+    private UmsRoleResourceRelationMapper roleResourceRelationMapper;
     @Override
     public List<UmsRole> getList(String keyword, Integer pageNum, Integer pageSize) {
         // 1 校验
@@ -93,5 +96,34 @@ public class UmsRoleService implements IUmsRoleService {
         List<UmsMenu> menuList = roleDao.getMenuListByRoleId(roleId);
         // 3 返回结果
         return menuList;
+    }
+
+    @Override
+    public List<UmsResource> listResources(Long roleId) {
+        // 1 校验
+        // 2 查询
+        List<UmsResource> resourceList = roleDao.getResourceListByRoleId(roleId);
+        // 3 返回结果集
+        return resourceList;
+    }
+
+    @Override
+    public int allocResource(Long roleId, List<Long> resourceIds) {
+        // 1 校验
+        // 2 分配逻辑
+        // 2.1 先删除原有关系
+        UmsRoleResourceRelationExample example = new UmsRoleResourceRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleResourceRelationMapper.deleteByExample(example);
+        // 2.2 插入角色资源关联数据集
+        for (Long resourceId : resourceIds) {
+            UmsRoleResourceRelation relation = new UmsRoleResourceRelation();
+            relation.setRoleId(roleId);
+            relation.setResourceId(resourceId);
+            relation.setCreatedTime(new Date());
+            roleResourceRelationMapper.insertSelective(relation);
+        }
+        // 3 返回结果
+        return resourceIds.size();
     }
 }

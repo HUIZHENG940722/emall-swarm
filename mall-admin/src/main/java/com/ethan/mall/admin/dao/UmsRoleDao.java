@@ -1,6 +1,7 @@
 package com.ethan.mall.admin.dao;
 
 import com.ethan.mall.model.UmsMenu;
+import com.ethan.mall.model.UmsResource;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public interface UmsRoleDao {
      * @return
      */
     List<UmsMenu> getMenuListByRoleId(@Param(value = "roleId") Long roleId);
+
+    /**
+     * 根据角色id获取资源列表
+     * @param roleId
+     * @return
+     */
+    List<UmsResource> getResourceListByRoleId(@Param(value = "roleId") Long roleId);
 }
