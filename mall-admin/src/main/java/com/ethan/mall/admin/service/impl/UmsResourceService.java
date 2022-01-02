@@ -59,5 +59,14 @@ public class UmsResourceService implements IUmsResourceService {
         return resourceList;
     }
 
+    @Override
+    public List<UmsResource> listAl() {
+        // 1 校验
+        // 2 查询
+        List<UmsResource> resourceList = resourceMapper.selectByExample(new UmsResourceExample());
+        // 3 返回结果集
+        return resourceList;
+    }
+
 
 }

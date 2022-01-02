@@ -28,4 +28,10 @@ public interface IUmsResourceService {
      */
     List<UmsResource> getList(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,
                               Integer pageNum);
+
+    /**
+     * 获取所有后台资源列表
+     * @return
+     */
+    List<UmsResource> listAl();
 }
