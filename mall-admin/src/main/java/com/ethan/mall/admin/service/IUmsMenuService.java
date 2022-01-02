@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.admin.domain.UmsMenuNode;
 import com.ethan.mall.model.UmsMenu;
 
 import java.util.List;
@@ -25,4 +26,10 @@ public interface IUmsMenuService {
      * @return
      */
     int create(UmsMenu menu);
+
+    /**
+     * 获取所有的菜单的树形结构列表
+     * @return
+     */
+    List<UmsMenuNode> treeList();
 }

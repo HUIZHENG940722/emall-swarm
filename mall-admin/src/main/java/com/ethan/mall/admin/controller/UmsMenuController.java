@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import com.ethan.mall.admin.domain.UmsMenuNode;
 import com.ethan.mall.admin.service.IUmsMenuService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
@@ -39,5 +40,12 @@ public class UmsMenuController {
             return CommonData.success(count);
         }
         return CommonData.failed();
+    }
+
+    @ApiOperation(value = "获取所有菜单的树形结构列表")
+    @GetMapping(value = "/treeList")
+    public CommonData<List<UmsMenuNode>> treeList() {
+        List<UmsMenuNode> list = menuService.treeList();
+        return CommonData.success(list);
     }
 }

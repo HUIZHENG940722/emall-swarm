@@ -1,5 +1,7 @@
 package com.ethan.mall.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.ethan.mall.admin.domain.UmsMenuNode;
 import com.ethan.mall.admin.service.IUmsMenuService;
 import com.ethan.mall.mapper.UmsMenuMapper;
 import com.ethan.mall.model.UmsMenu;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author ethan
@@ -58,5 +62,26 @@ public class UmsMenuService implements IUmsMenuService {
         int count = menuMapper.insertSelective(menu);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public List<UmsMenuNode> treeList() {
+        // 1 校验
+        // 2 获取树形结构列表
+        List<UmsMenu> menuList = menuMapper.selectByExample(new UmsMenuExample());
+        List<UmsMenuNode> result = menuList.stream().filter(menu -> menu.getParentId().equals(0L))
+                .map(menu -> coverMenuNode(menu, menuList))
+                .collect(Collectors.toList());
+        // 3 返回结果集
+        return result;
+    }
+
+    private UmsMenuNode coverMenuNode(UmsMenu menu, List<UmsMenu> menuList) {
+        UmsMenuNode node = new UmsMenuNode();
+        BeanUtil.copyProperties(menu, node);
+        List<UmsMenuNode> children = menuList.stream().filter(subMenu -> subMenu.getParentId().equals(menu.getId()))
+                .map(subMenu -> coverMenuNode(subMenu, menuList)).collect(Collectors.toList());
+        node.setChildren(children);
+        return node;
     }
 }
