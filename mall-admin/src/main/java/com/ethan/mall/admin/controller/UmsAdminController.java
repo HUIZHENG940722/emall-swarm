@@ -83,4 +83,10 @@ public class UmsAdminController {
         tokenMap.put("tokenHead", tokenHead);
         return CommonData.success(tokenMap);
     }
+
+    @ApiOperation(value = "登出功能")
+    @PostMapping(value = "/logout")
+    public CommonData logout() {
+        return CommonData.success(null);
+    }
 }
