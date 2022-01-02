@@ -1,10 +1,11 @@
 package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.ethan.mall.admin.dao.UmsRoleDao;
 import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.mapper.UmsRoleMapper;
-import com.ethan.mall.model.UmsRole;
-import com.ethan.mall.model.UmsRoleExample;
+import com.ethan.mall.mapper.UmsRoleMenuRelationMapper;
+import com.ethan.mall.model.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ import java.util.List;
 public class UmsRoleService implements IUmsRoleService {
     @Resource
     private UmsRoleMapper roleMapper;
+    @Resource
+    private UmsRoleMenuRelationMapper roleMenuRelationMapper;
+    @Resource
+    private UmsRoleDao roleDao;
     @Override
     public List<UmsRole> getList(String keyword, Integer pageNum, Integer pageSize) {
         // 1 校验
@@ -59,5 +64,34 @@ public class UmsRoleService implements IUmsRoleService {
         int count = roleMapper.updateByPrimaryKeySelective(role);
         // 3 返回结果集
         return count;
+    }
+
+    @Override
+    public int allocMenu(Long roleId, List<Long> menuIds) {
+        // 1 校验
+        // 2 分配菜单逻辑
+        // 2.1 先删除原来的角色菜单关联信息
+        UmsRoleMenuRelationExample example = new UmsRoleMenuRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleMenuRelationMapper.deleteByExample(example);
+        // 2.2 再批量插入
+        for (Long menuId : menuIds) {
+            UmsRoleMenuRelation roleMenuRelation = new UmsRoleMenuRelation();
+            roleMenuRelation.setRoleId(roleId);
+            roleMenuRelation.setMenuId(menuId);
+            roleMenuRelation.setCreatedTime(new Date());
+            roleMenuRelationMapper.insertSelective(roleMenuRelation);
+        }
+        // 3 返回结果集
+        return menuIds.size();
+    }
+
+    @Override
+    public List<UmsMenu> menuList(Long roleId) {
+        // 1 校验
+        // 2 查询
+        List<UmsMenu> menuList = roleDao.getMenuListByRoleId(roleId);
+        // 3 返回结果
+        return menuList;
     }
 }

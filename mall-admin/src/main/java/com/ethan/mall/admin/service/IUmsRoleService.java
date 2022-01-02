@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.service;
 
+import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 
 import java.util.List;
@@ -33,4 +34,19 @@ public interface IUmsRoleService {
      * @return
      */
     int update(Long id, UmsRole role);
+
+    /**
+     * 给角色分配菜单
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    int allocMenu(Long roleId, List<Long> menuIds);
+
+    /**
+     * 获取角色对应的菜单列表
+     * @param roleId
+     * @return
+     */
+    List<UmsMenu> menuList(Long roleId);
 }

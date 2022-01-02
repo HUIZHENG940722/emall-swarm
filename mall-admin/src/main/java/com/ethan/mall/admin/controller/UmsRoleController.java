@@ -3,6 +3,7 @@ package com.ethan.mall.admin.controller;
 import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
+import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,5 +52,19 @@ public class UmsRoleController {
             return CommonData.success(count);
         }
         return CommonData.failed();
+    }
+
+    @ApiOperation("给角色分配菜单")
+    @PostMapping(value = "/allocMenu")
+    public CommonData allocMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
+        int count = roleService.allocMenu(roleId, menuIds);
+        return CommonData.success(count);
+    }
+
+    @ApiOperation("获取角色相关菜单")
+    @GetMapping(value = "/menuList/{roleId}")
+    public CommonData<List<UmsMenu>> menuList(@PathVariable Long roleId) {
+        List<UmsMenu> menuList = roleService.menuList(roleId);
+        return CommonData.success(menuList);
     }
 }

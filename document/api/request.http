@@ -1,3 +1,8 @@
+POST http://localhost:8080/role/allocMenu?roleId=1&menuIds=[1]
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImNyZWF0ZWQiOjE2NDExMDg3Nzg5MDgsImV4cCI6MTY0MTEwOTM4M30.6Eg04AME6fke26gSaWZ17-Wx-kfcFJk75FLlRUCrBGZApve3oQU8zHx_IBwkfi7Piq1IU6zw4eOhXdsK68gt-w
+
+###
 ###
 POST http://localhost:8080/admin/login
 Content-Type: application/json
