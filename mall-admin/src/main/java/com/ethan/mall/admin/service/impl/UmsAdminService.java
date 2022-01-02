@@ -10,9 +10,8 @@ import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
-import com.ethan.mall.model.UmsAdmin;
-import com.ethan.mall.model.UmsAdminExample;
-import com.ethan.mall.model.UmsRole;
+import com.ethan.mall.mapper.UmsAdminRoleRelationMapper;
+import com.ethan.mall.model.*;
 import com.ethan.mall.security.component.JwtTokenUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +47,9 @@ public class UmsAdminService implements IUmsAdminService {
     private UmsAdminRoleRelationDao adminRoleRelationDao;
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private UmsAdminRoleRelationMapper adminRoleRelationMapper;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -154,6 +157,30 @@ public class UmsAdminService implements IUmsAdminService {
         int count = updateLoginTimeByUsername(username);
         // 3 返回结果
         return token;
+    }
+
+    @Override
+    public int updateRole(Long adminId, List<Long> roleIds) {
+        // 1 校验
+        // 2 分配角色逻辑
+        // 2.1 删除原来的用户角色关联信息
+        UmsAdminRoleRelationExample adminRoleRelationExample = new UmsAdminRoleRelationExample();
+        adminRoleRelationExample.createCriteria().andAdminIdEqualTo(adminId);
+        adminRoleRelationMapper.deleteByExample(adminRoleRelationExample);
+        // 2.2 插入新的用户角色关联数据
+        if (CollUtil.isNotEmpty(roleIds)) {
+            List<UmsAdminRoleRelation> list = new ArrayList<>();
+            for (Long roleId : roleIds) {
+                UmsAdminRoleRelation roleRelation = new UmsAdminRoleRelation();
+                roleRelation.setAdminId(adminId);
+                roleRelation.setRoleId(roleId);
+                roleRelation.setCreatedTime(new Date());
+                list.add(roleRelation);
+            }
+            adminRoleRelationDao.insertList(list);
+        }
+        // 3 返回结果
+        return roleIds.size();
     }
 
 

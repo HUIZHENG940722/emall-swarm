@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.dao;
 
+import com.ethan.mall.model.UmsAdminRoleRelation;
 import com.ethan.mall.model.UmsRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,4 +19,10 @@ public interface UmsAdminRoleRelationDao {
      * @return
      */
     List<UmsRole> getRoleList(@Param(value = "adminId") Long adminId);
+
+    /**
+     * 批量插入用户角色关联数据
+     * @param list
+     */
+    void insertList(List<UmsAdminRoleRelation> list);
 }

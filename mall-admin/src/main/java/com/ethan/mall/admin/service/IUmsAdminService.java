@@ -66,4 +66,12 @@ public interface IUmsAdminService {
      * @return
      */
     String login(String username, String password);
+
+    /**
+     * 给用户分配角色
+     * @param adminId
+     * @param roleIds
+     * @return
+     */
+    int updateRole(Long adminId, List<Long> roleIds);
 }

@@ -89,4 +89,11 @@ public class UmsAdminController {
     public CommonData logout() {
         return CommonData.success(null);
     }
+
+    @ApiOperation(value = "给用户分配角色列表")
+    @PostMapping(value = "/role/update")
+    public CommonData updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
+        int count = adminService.updateRole(adminId, roleIds);
+        return CommonData.success(count);
+    }
 }
