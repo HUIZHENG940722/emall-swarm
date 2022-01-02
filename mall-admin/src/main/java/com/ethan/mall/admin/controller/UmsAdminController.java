@@ -7,6 +7,7 @@ import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
+import com.ethan.mall.model.UmsRole;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
@@ -95,5 +96,12 @@ public class UmsAdminController {
     public CommonData updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
         int count = adminService.updateRole(adminId, roleIds);
         return CommonData.success(count);
+    }
+
+    @ApiOperation(value = "获取指定用户角色")
+    @GetMapping(value = "/role/{adminId}")
+    public CommonData<List<UmsRole>> getRoleList(@PathVariable Long adminId) {
+        List<UmsRole> roleList = adminService.getRoleList(adminId);
+        return CommonData.success(roleList);
     }
 }
