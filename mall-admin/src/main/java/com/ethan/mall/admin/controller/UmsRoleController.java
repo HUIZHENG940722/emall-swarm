@@ -82,4 +82,11 @@ public class UmsRoleController {
         int count = roleService.allocResource(roleId, resourceIds);
         return CommonData.success(count);
     }
+
+    @ApiOperation(value = "获取所有的角色列表")
+    @GetMapping(value = "/listAll")
+    public CommonData<List<UmsRole>> listAll() {
+        List<UmsRole> roleList = roleService.listAll();
+        return CommonData.success(roleList);
+    }
 }

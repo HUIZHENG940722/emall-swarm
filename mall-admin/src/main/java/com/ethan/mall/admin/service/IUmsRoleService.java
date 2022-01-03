@@ -65,4 +65,10 @@ public interface IUmsRoleService {
      * @return
      */
     int allocResource(Long roleId, List<Long> resourceIds);
+
+    /**
+     * 获取所有的角色列表
+     * @return
+     */
+    List<UmsRole> listAll();
 }

@@ -126,4 +126,13 @@ public class UmsRoleService implements IUmsRoleService {
         // 3 返回结果
         return resourceIds.size();
     }
+
+    @Override
+    public List<UmsRole> listAll() {
+        // 1 校验
+        // 2 查询
+        List<UmsRole> roleList = roleMapper.selectByExample(new UmsRoleExample());
+        // 3 返回结果集
+        return roleList;
+    }
 }
