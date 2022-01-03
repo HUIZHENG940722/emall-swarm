@@ -3,9 +3,12 @@ package com.ethan.mall.admin.service;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
+import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ethan
@@ -74,4 +77,18 @@ public interface IUmsAdminService {
      * @return
      */
     int updateRole(Long adminId, List<Long> roleIds);
+
+    /**
+     * 获取当前登录用户信息
+     * @param principal
+     * @return
+     */
+    Map getAdminInfo(Principal principal);
+
+    /**
+     * 获取用户菜单列表
+     * @param adminId
+     * @return
+     */
+    List<UmsMenu> getMenuList(Long adminId);
 }

@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ethan.mall.admin.config.AuthService;
+import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
+import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
@@ -22,9 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.security.Principal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +51,8 @@ public class UmsAdminService implements IUmsAdminService {
 
     @Resource
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
+    @Resource
+    private UmsAdminDao adminDao;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -183,6 +186,41 @@ public class UmsAdminService implements IUmsAdminService {
         return roleIds.size();
     }
 
+    @Override
+    public Map getAdminInfo(Principal principal) {
+        // 1 校验
+        // 2 获取逻辑
+        // 2.1 验证是否登录
+        if (principal==null) {
+            return null;
+        }
+        // 2.2 获取用户名信息
+        String username = principal.getName();
+        // 2.1 验证用户名信息是否有效
+        UmsAdmin umsAdmin = getByUsername(username);
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", umsAdmin.getUsername());
+        // 2.3 获取该用户菜单项
+        data.put("menus", getMenuList(umsAdmin.getId()));
+        data.put("icon", umsAdmin.getIcon());
+        // 2.4 获取该用户角色
+        List<UmsRole> roleList = getRoleList(umsAdmin.getId());
+        if(CollUtil.isNotEmpty(roleList)){
+            List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
+            data.put("roles",roles);
+        }
+        // 3 返回结果
+        return data;
+    }
+
+    @Override
+    public List<UmsMenu> getMenuList(Long adminId) {
+        // 1 校验
+        // 2 获取逻辑
+        List<UmsMenu> menuList = adminDao.getMenuList(adminId);
+        // 3 返回结果集
+        return menuList;
+    }
 
     @Override
     public List<UmsRole> getRoleList(Long adminId) {
