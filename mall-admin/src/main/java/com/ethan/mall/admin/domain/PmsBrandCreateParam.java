@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.domain;
 
+import com.ethan.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class PmsBrandCreateParam {
     @ApiModelProperty(value = "是否为厂家制造商")
     private Integer factoryStatus;
     @ApiModelProperty(value = "是否进行显示")
+    @FlagValidator(values = {"0", "1"})
     private Integer showStatus;
     @NotEmpty
     @ApiModelProperty(value = "品牌logo",required = true)

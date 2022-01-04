@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,7 +29,7 @@ public class PmsProductAttributeController {
     private IPmsProductAttributeService productAttributeService;
     @ApiOperation("添加商品类型信息")
     @PostMapping(value = "/create")
-    public CommonData create(@RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
+    public CommonData create(@Validated @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
         int count = productAttributeService.create(productAttributeCreateParam);
         if (count > 0) {
             return CommonData.success(count);

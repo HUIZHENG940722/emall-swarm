@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.domain;
 
+import com.ethan.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -22,8 +23,10 @@ public class PmsProductCategoryAddParam {
     @ApiModelProperty("分类单位")
     private String productUnit;
     @ApiModelProperty("是否在导航栏显示")
+    @FlagValidator(values = {"0","1"},message = "状态只能为0或1")
     private Integer navStatus;
     @ApiModelProperty("是否进行显示")
+    @FlagValidator(values = {"0","1"},message = "状态只能为0或1")
     private Integer showStatus;
     @Min(value = 0)
     @ApiModelProperty("排序")

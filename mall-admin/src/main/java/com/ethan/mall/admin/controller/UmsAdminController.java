@@ -61,7 +61,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "修改指定用户信息")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id, @RequestBody UmsAdminRegisterParam adminRegisterParam) {
+    public CommonData update(@PathVariable Long id, @Validated @RequestBody UmsAdminRegisterParam adminRegisterParam) {
         int count = adminService.update(id, adminRegisterParam);
         if (count > 0) {
             return CommonData.success(count);
