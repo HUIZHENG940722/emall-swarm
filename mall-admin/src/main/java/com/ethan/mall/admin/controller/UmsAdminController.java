@@ -1,6 +1,5 @@
 package com.ethan.mall.admin.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import com.ethan.mall.admin.domain.UmsAdminLoginParam;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
@@ -21,7 +20,6 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author ethan
