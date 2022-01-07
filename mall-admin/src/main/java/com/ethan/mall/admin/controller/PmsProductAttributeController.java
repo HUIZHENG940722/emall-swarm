@@ -29,7 +29,7 @@ public class PmsProductAttributeController {
     private IPmsProductAttributeService productAttributeService;
     @ApiOperation("添加商品类型信息")
     @PostMapping(value = "/create")
-    public CommonData create(@Validated @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
+    public CommonData<Integer> create(@Validated @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
         int count = productAttributeService.create(productAttributeCreateParam);
         if (count > 0) {
             return CommonData.success(count);
@@ -60,7 +60,7 @@ public class PmsProductAttributeController {
 
     @ApiOperation("修改商品属性信息")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id, @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
+    public CommonData<Integer> update(@PathVariable Long id, @RequestBody PmsProductAttributeCreateParam productAttributeCreateParam) {
         int count = productAttributeService.update(id, productAttributeCreateParam);
         if (count > 0) {
             return CommonData.success(count);

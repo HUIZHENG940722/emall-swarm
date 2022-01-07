@@ -26,7 +26,7 @@ public class PmsProductAttributeCategoryController {
 
     @ApiOperation("添加商品属性分类")
     @PostMapping(value = "/create")
-    public CommonData create(@RequestParam String name) {
+    public CommonData<Integer> create(@RequestParam String name) {
         int count = productAttributeCategoryService.create(name);
         if (count > 0) {
             return CommonData.success(count);
@@ -47,7 +47,7 @@ public class PmsProductAttributeCategoryController {
 
     @ApiOperation("修改商品类型分类")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id, @RequestParam String name) {
+    public CommonData<Integer> update(@PathVariable Long id, @RequestParam String name) {
         int count = productAttributeCategoryService.update(id, name);
         if (count > 0) {
             return CommonData.success(count);

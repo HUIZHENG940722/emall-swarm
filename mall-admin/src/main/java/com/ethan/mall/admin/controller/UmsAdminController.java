@@ -59,7 +59,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "修改指定用户信息")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id, @Validated @RequestBody UmsAdminRegisterParam adminRegisterParam) {
+    public CommonData<Integer> update(@PathVariable Long id, @Validated @RequestBody UmsAdminRegisterParam adminRegisterParam) {
         int count = adminService.update(id, adminRegisterParam);
         if (count > 0) {
             return CommonData.success(count);
@@ -76,7 +76,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "登录获取token")
     @PostMapping(value = "/login")
-    public CommonData login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
+    public CommonData<Map<String, String>> login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
         String token = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
         if (token == null) {
             return CommonData.failed("用户名或密码错误");
@@ -95,7 +95,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "给用户分配角色列表")
     @PostMapping(value = "/role/update")
-    public CommonData updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
+    public CommonData<Integer> updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
         int count = adminService.updateRole(adminId, roleIds);
         return CommonData.success(count);
     }
@@ -109,8 +109,8 @@ public class UmsAdminController {
 
     @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping(value = "/info")
-    public CommonData getAdminInfo(Principal principal) {
-        Map data = adminService.getAdminInfo(principal);
+    public CommonData<Map<String, Object>> getAdminInfo(Principal principal) {
+        Map<String, Object> data = adminService.getAdminInfo(principal);
         if (MapUtil.isEmpty(data)) {
             CommonData.unauthorized(null);
         }
