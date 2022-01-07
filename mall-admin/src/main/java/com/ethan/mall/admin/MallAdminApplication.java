@@ -16,7 +16,9 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients
 @EnableCaching
 public class MallAdminApplication {
-
+    static {
+        System.setProperty("druid.mysql.usePingMethod", "false");
+    }
     public static void main(String[] args) {
         SpringApplication.run(MallAdminApplication.class, args);
     }
