@@ -68,7 +68,7 @@ public interface IUmsAdminService {
      * @param password
      * @return
      */
-    String login(String username, String password);
+//    String login(String username, String password);
 
     /**
      * 给用户分配角色
@@ -83,7 +83,7 @@ public interface IUmsAdminService {
      * @param principal
      * @return
      */
-    Map getAdminInfo(Principal principal);
+//    Map getAdminInfo(Principal principal);
 
     /**
      * 获取用户菜单列表

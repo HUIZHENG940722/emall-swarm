@@ -74,7 +74,7 @@ public class UmsAdminController {
         return loginUser;
     }
 
-    @ApiOperation(value = "登录获取token")
+    /*@ApiOperation(value = "登录获取token")
     @PostMapping(value = "/login")
     public CommonData<Map<String, String>> login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
         String token = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
@@ -85,7 +85,7 @@ public class UmsAdminController {
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
         return CommonData.success(tokenMap);
-    }
+    }*/
 
     @ApiOperation(value = "登出功能")
     @PostMapping(value = "/logout")
@@ -107,7 +107,7 @@ public class UmsAdminController {
         return CommonData.success(roleList);
     }
 
-    @ApiOperation(value = "获取当前登录用户信息")
+    /*@ApiOperation(value = "获取当前登录用户信息")
     @GetMapping(value = "/info")
     public CommonData<Map<String, Object>> getAdminInfo(Principal principal) {
         Map<String, Object> data = adminService.getAdminInfo(principal);
@@ -115,5 +115,5 @@ public class UmsAdminController {
             CommonData.unauthorized(null);
         }
         return CommonData.success(data);
-    }
+    }*/
 }

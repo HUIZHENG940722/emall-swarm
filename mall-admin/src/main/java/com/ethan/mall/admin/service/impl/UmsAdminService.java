@@ -3,7 +3,6 @@ package com.ethan.mall.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ethan.mall.admin.config.AuthService;
 import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
@@ -14,7 +13,6 @@ import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.mapper.UmsAdminRoleRelationMapper;
 import com.ethan.mall.model.*;
-import com.ethan.mall.security.component.JwtTokenUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,12 +35,6 @@ import java.util.stream.Collectors;
 public class UmsAdminService implements IUmsAdminService {
     @Resource
     private UmsAdminMapper adminMapper;
-
-    @Resource
-    private AuthService authService;
-
-    @Resource
-    private JwtTokenUtil jwtTokenUtil;
 
     @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
@@ -148,7 +140,7 @@ public class UmsAdminService implements IUmsAdminService {
         return null;
     }
 
-    @Override
+    /*@Override
     public String login(String username, String password) {
         // 1 校验
         // 2 获取token信息
@@ -164,7 +156,7 @@ public class UmsAdminService implements IUmsAdminService {
         int count = updateLoginTimeByUsername(username);
         // 3 返回结果
         return token;
-    }
+    }*/
 
     @Override
     public int updateRole(Long adminId, List<Long> roleIds) {
@@ -192,32 +184,32 @@ public class UmsAdminService implements IUmsAdminService {
         return roleIds.size();
     }
 
-    @Override
-    public Map getAdminInfo(Principal principal) {
-        // 1 校验
-        // 2 获取逻辑
-        // 2.1 验证是否登录
-        if (principal==null) {
-            return null;
-        }
-        // 2.2 获取用户名信息
-        String username = principal.getName();
-        // 2.1 验证用户名信息是否有效
-        UmsAdmin umsAdmin = getByUsername(username);
-        Map<String, Object> data = new HashMap<>();
-        data.put("username", umsAdmin.getUsername());
-        // 2.3 获取该用户菜单项
-        data.put("menus", getMenuList(umsAdmin.getId()));
-        data.put("icon", umsAdmin.getIcon());
-        // 2.4 获取该用户角色
-        List<UmsRole> roleList = getRoleList(umsAdmin.getId());
-        if(CollUtil.isNotEmpty(roleList)){
-            List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
-            data.put("roles",roles);
-        }
-        // 3 返回结果
-        return data;
-    }
+//    @Override
+//    public Map getAdminInfo(Principal principal) {
+//        // 1 校验
+//        // 2 获取逻辑
+//        // 2.1 验证是否登录
+//        if (principal==null) {
+//            return null;
+//        }
+//        // 2.2 获取用户名信息
+//        String username = principal.getName();
+//        // 2.1 验证用户名信息是否有效
+//        UmsAdmin umsAdmin = getByUsername(username);
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("username", umsAdmin.getUsername());
+//        // 2.3 获取该用户菜单项
+//        data.put("menus", getMenuList(umsAdmin.getId()));
+//        data.put("icon", umsAdmin.getIcon());
+//        // 2.4 获取该用户角色
+//        List<UmsRole> roleList = getRoleList(umsAdmin.getId());
+//        if(CollUtil.isNotEmpty(roleList)){
+//            List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
+//            data.put("roles",roles);
+//        }
+//        // 3 返回结果
+//        return data;
+//    }
 
     @Override
     public List<UmsMenu> getMenuList(Long adminId) {
