@@ -91,4 +91,11 @@ public interface IUmsAdminService {
      * @return
      */
     List<UmsMenu> getMenuList(Long adminId);
+
+    /**
+     * 根据后台用户id获取后台用户
+     * @param id
+     * @return
+     */
+    UmsAdmin getByAdminId(Long id);
 }

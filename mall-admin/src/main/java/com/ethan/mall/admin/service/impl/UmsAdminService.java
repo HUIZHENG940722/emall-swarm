@@ -7,8 +7,8 @@ import com.ethan.mall.admin.config.AuthService;
 import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
+import com.ethan.mall.admin.service.IUmsAdminCacheService;
 import com.ethan.mall.admin.service.IUmsAdminService;
-import com.ethan.mall.admin.service.IUmsRoleService;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
@@ -53,6 +53,8 @@ public class UmsAdminService implements IUmsAdminService {
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
     @Resource
     private UmsAdminDao adminDao;
+    @Resource
+    private IUmsAdminCacheService adminCacheService;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -119,6 +121,8 @@ public class UmsAdminService implements IUmsAdminService {
         admin.setUpdatedTime(new Date());
         // 2.3 更新数据
         int count = adminMapper.updateByPrimaryKeySelective(admin);
+        // 2.4 从缓存中删除用户记录
+        adminCacheService.delAdmin(id);
         // 3 返回结果集
         return count;
     }
@@ -182,6 +186,8 @@ public class UmsAdminService implements IUmsAdminService {
             }
             adminRoleRelationDao.insertList(list);
         }
+        // 2.3 从缓存中删除用户记录
+        adminCacheService.delAdmin(adminId);
         // 3 返回结果
         return roleIds.size();
     }
@@ -223,6 +229,15 @@ public class UmsAdminService implements IUmsAdminService {
     }
 
     @Override
+    public UmsAdmin getByAdminId(Long id) {
+        // 1 校验
+        // 2 查询逻辑
+        UmsAdmin admin = adminMapper.selectByPrimaryKey(id);
+        // 3 返回结果集
+        return admin;
+    }
+
+    @Override
     public List<UmsRole> getRoleList(Long adminId) {
         // 1 校验
         // 2 查询
@@ -235,14 +250,22 @@ public class UmsAdminService implements IUmsAdminService {
     public UmsAdmin getByUsername(String username) {
         // 1 校验
         // 2 查询
-        // 2.1 拼装查询条件
+        // 2.1 从redis缓存中获取
+        UmsAdmin admin = adminCacheService.getAdmin(username);
+        if (admin != null) {
+            return admin;
+        }
+        // 2.2 拼装查询条件
         UmsAdminExample adminExample = new UmsAdminExample();
         adminExample.createCriteria().andUsernameEqualTo(username);
         // 2.2 执行查询
         List<UmsAdmin> umsAdmins = adminMapper.selectByExample(adminExample);
         // 3 返回结果集
         if (CollUtil.isNotEmpty(umsAdmins)) {
-            return umsAdmins.get(0);
+            UmsAdmin umsAdmin = umsAdmins.get(0);
+            // 设置redis缓存
+            adminCacheService.setAdmin(umsAdmin);
+            return umsAdmin;
         }
         return null;
     }
