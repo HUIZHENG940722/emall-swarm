@@ -1,7 +1,9 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
+import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.domain.LoginUser;
+import com.ethan.mall.common.domain.Oauth2TokenDto;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
@@ -98,4 +100,12 @@ public interface IUmsAdminService {
      * @return
      */
     UmsAdmin getByAdminId(Long id);
+
+    /**
+     * 登录以后返回token
+     * @param username
+     * @param password
+     * @return
+     */
+    CommonData<Oauth2TokenDto> login(String username, String password);
 }

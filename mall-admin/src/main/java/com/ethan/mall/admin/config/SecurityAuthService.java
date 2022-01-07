@@ -16,7 +16,7 @@
 // * @Description 认证业务类
 // */
 //@Service
-//public class AuthService implements UserDetailsService {
+//public class SecurityAuthService implements UserDetailsService {
 //    @Resource
 //    private IUmsAdminService adminService;
 //

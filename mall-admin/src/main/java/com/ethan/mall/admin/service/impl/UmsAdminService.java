@@ -8,21 +8,21 @@ import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminCacheService;
 import com.ethan.mall.admin.service.IUmsAdminService;
+import com.ethan.mall.admin.service.feign.IAuthService;
+import com.ethan.mall.common.api.CommonData;
+import com.ethan.mall.common.api.ResultCode;
+import com.ethan.mall.common.constant.AuthConstant;
 import com.ethan.mall.common.domain.LoginUser;
+import com.ethan.mall.common.domain.Oauth2TokenDto;
 import com.ethan.mall.common.exception.Asserts;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.mapper.UmsAdminRoleRelationMapper;
 import com.ethan.mall.model.*;
 import com.github.pagehelper.PageHelper;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +47,8 @@ public class UmsAdminService implements IUmsAdminService {
     private UmsAdminDao adminDao;
     @Resource
     private IUmsAdminCacheService adminCacheService;
+    @Resource
+    private IAuthService authService;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -140,24 +142,6 @@ public class UmsAdminService implements IUmsAdminService {
         return null;
     }
 
-    /*@Override
-    public String login(String username, String password) {
-        // 1 校验
-        // 2 获取token信息
-        UserDetails userDetails = authService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("密码不正确");
-        }
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtTokenUtil.generateToken(userDetails);
-        // 更新最后一次登录时间
-        int count = updateLoginTimeByUsername(username);
-        // 3 返回结果
-        return token;
-    }*/
-
     @Override
     public int updateRole(Long adminId, List<Long> roleIds) {
         // 1 校验
@@ -227,6 +211,27 @@ public class UmsAdminService implements IUmsAdminService {
         UmsAdmin admin = adminMapper.selectByPrimaryKey(id);
         // 3 返回结果集
         return admin;
+    }
+
+    @Override
+    public CommonData<Oauth2TokenDto> login(String username, String password) {
+        // 1 校验
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            Asserts.fail("用户或密码不能为空");
+        }
+        // 2 执行逻辑
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", AuthConstant.ADMIN_CLIENT_ID);
+        params.put("client_secret", "123456");
+        params.put("grant_type", "password");
+        params.put("username", username);
+        params.put("password", password);
+        CommonData<Oauth2TokenDto> accessToken = authService.getAccessToken(params);
+        // 3 返回结果集
+        if (ResultCode.SUCCESS.getCode().equals(accessToken.getCode())) {
+            updateLoginTimeByUsername(username);
+        }
+        return accessToken;
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.ethan.mall.auth;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author ethan
+ */
 @SpringBootApplication
 public class MallAuthApplication {
 

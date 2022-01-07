@@ -1,12 +1,12 @@
 package com.ethan.mall.admin.controller;
 
-import cn.hutool.core.map.MapUtil;
 import com.ethan.mall.admin.domain.UmsAdminLoginParam;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.common.domain.LoginUser;
+import com.ethan.mall.common.domain.Oauth2TokenDto;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsRole;
 import io.swagger.annotations.Api;
@@ -16,10 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author ethan
@@ -74,18 +71,11 @@ public class UmsAdminController {
         return loginUser;
     }
 
-    /*@ApiOperation(value = "登录获取token")
+    @ApiOperation(value = "登录以后返回token")
     @PostMapping(value = "/login")
-    public CommonData<Map<String, String>> login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
-        String token = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
-        if (token == null) {
-            return CommonData.failed("用户名或密码错误");
-        }
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", token);
-        tokenMap.put("tokenHead", tokenHead);
-        return CommonData.success(tokenMap);
-    }*/
+    public CommonData<Oauth2TokenDto> login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
+        return adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
+    }
 
     @ApiOperation(value = "登出功能")
     @PostMapping(value = "/logout")
