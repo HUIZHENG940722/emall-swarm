@@ -16,6 +16,11 @@ import java.util.Map;
  */
 @FeignClient(value = "mall-auth")
 public interface IAuthService {
+    /**
+     * 远程服务获取token
+     * @param parameters
+     * @return
+     */
     @PostMapping(value = "/oauth/token")
     @ApiOperation(value = "oauth2认证获取token信息")
     CommonData<Oauth2TokenDto> getAccessToken(@RequestParam Map<String, String> parameters);

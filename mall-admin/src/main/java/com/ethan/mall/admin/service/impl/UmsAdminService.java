@@ -3,6 +3,7 @@ package com.ethan.mall.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
@@ -38,8 +39,6 @@ public class UmsAdminService implements IUmsAdminService {
 
     @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
     @Resource
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
@@ -77,7 +76,7 @@ public class UmsAdminService implements IUmsAdminService {
         // 2.2 设置创建时间
         admin.setCreatedTime(new Date());
         // 2.3 对用户密码进行加密
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setPassword(BCrypt.hashpw(admin.getPassword()));
         // 2.4 插入用户信息
         int i = adminMapper.insertSelective(admin);
         // 3 返回结果集

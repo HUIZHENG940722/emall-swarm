@@ -1,0 +1,6 @@
+# 应用名称
+spring:
+  profiles:
+    active: dev # 开发环境
+  application:
+    name: mall-auth
