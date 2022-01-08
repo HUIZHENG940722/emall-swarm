@@ -10,4 +10,9 @@ public interface AuthConstant {
      * 后台管理client_id
      */
     String ADMIN_CLIENT_ID = "admin-app";
+
+    /**
+     * JWT令牌前缀
+     */
+    String JWT_TOKEN_PREFIX = "Bearer ";
 }
