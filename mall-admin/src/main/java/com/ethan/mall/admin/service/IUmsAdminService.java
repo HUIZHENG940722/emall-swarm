@@ -3,14 +3,11 @@ package com.ethan.mall.admin.service;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.domain.LoginUser;
-import com.ethan.mall.common.domain.Oauth2TokenDto;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author ethan
@@ -107,5 +104,5 @@ public interface IUmsAdminService {
      * @param password
      * @return
      */
-    CommonData<Oauth2TokenDto> login(String username, String password);
+    CommonData login(String username, String password);
 }

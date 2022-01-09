@@ -6,7 +6,6 @@ import com.ethan.mall.admin.service.IUmsAdminService;
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.api.CommonPage;
 import com.ethan.mall.common.domain.LoginUser;
-import com.ethan.mall.common.domain.Oauth2TokenDto;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsRole;
 import io.swagger.annotations.Api;
@@ -73,7 +72,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "登录以后返回token")
     @PostMapping(value = "/login")
-    public CommonData<Oauth2TokenDto> login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
+    public CommonData login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
         return adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
     }
 

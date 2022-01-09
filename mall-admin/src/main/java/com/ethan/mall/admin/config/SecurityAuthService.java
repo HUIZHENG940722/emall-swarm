@@ -1,6 +1,6 @@
 //package com.ethan.mall.admin.config;
 //
-//import com.ethan.mall.admin.domain.AuthUser;
+//import com.ethan.mall.auth.AuthUser;
 //import com.ethan.mall.admin.service.IUmsAdminService;
 //import com.ethan.mall.common.domain.LoginUser;
 //import org.springframework.security.core.userdetails.UserDetails;

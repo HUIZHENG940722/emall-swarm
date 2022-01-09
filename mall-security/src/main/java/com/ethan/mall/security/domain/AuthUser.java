@@ -1,4 +1,4 @@
-package com.ethan.mall.admin.domain;
+package com.ethan.mall.security.domain;
 
 import com.ethan.mall.common.domain.LoginUser;
 import org.springframework.security.core.GrantedAuthority;

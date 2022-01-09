@@ -2,7 +2,7 @@ package com.ethan.mall.auth.controller;
 
 import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.constant.AuthConstant;
-import com.ethan.mall.common.domain.Oauth2TokenDto;
+import com.ethan.mall.auth.domain.Oauth2TokenDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
