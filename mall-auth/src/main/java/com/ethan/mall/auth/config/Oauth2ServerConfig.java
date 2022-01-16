@@ -2,6 +2,7 @@ package com.ethan.mall.auth.config;
 
 import com.ethan.mall.auth.component.JwtTokenEnhancer;
 import com.ethan.mall.auth.service.impl.AuthorizationService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -17,7 +18,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
-import javax.annotation.Resource;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +27,14 @@ import java.util.List;
  * @Date 9:33 AM 2022/1/8
  * @Description 认证服务器配置
  */
+@AllArgsConstructor
 @Configuration
 @EnableAuthorizationServer
 public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
-    @Resource
-    private PasswordEncoder passwordEncoder;
-    @Resource
-    private AuthorizationService authorizationService;
-    @Resource
-    private AuthenticationManager authenticationManager;
-    @Resource
-    private JwtTokenEnhancer jwtTokenEnhancer;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorizationService authorizationService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenEnhancer jwtTokenEnhancer;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

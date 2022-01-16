@@ -2,6 +2,7 @@ package com.ethan.mall.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.ethan.mall.common.constant.AuthConstant;
+import com.ethan.mall.gateway.config.IgnoreUrlsConfig;
 import com.nimbusds.jose.JWSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +10,17 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
+import java.net.URI;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * @author ethan
@@ -23,6 +30,9 @@ import java.text.ParseException;
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
     public static final Logger LOGGER = LoggerFactory.getLogger(AuthGlobalFilter.class);
+
+    @Resource
+    private IgnoreUrlsConfig ignoreUrlsConfig;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

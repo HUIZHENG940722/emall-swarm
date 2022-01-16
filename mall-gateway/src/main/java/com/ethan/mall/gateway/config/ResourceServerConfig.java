@@ -6,6 +6,7 @@ import com.ethan.mall.gateway.authorization.AuthorizationManager;
 import com.ethan.mall.gateway.component.RestAuthenticationEntryPoint;
 import com.ethan.mall.gateway.component.RestfulAccessDeniedHandler;
 import com.ethan.mall.gateway.filter.IgnoreUrlsRemoveJwtFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -20,26 +21,20 @@ import org.springframework.security.oauth2.server.resource.authentication.Reacti
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Resource;
-
 /**
  * @author ethan
  * @Date 12:11 PM 2022/1/9
  * @Description 资源服务器配置
  */
+@AllArgsConstructor
 @Configuration
 @EnableWebFluxSecurity
 public class ResourceServerConfig {
-    @Resource
-    private AuthorizationManager authorizationManager;
-    @Resource
-    private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
-    @Resource
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    @Resource
-    private IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
-    @Resource
-    private IgnoreUrlsConfig ignoreUrlsConfig;
+    private final AuthorizationManager authorizationManager;
+    private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
+    private final IgnoreUrlsConfig ignoreUrlsConfig;
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {

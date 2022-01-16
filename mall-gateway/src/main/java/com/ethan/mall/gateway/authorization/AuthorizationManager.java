@@ -1,10 +1,10 @@
 package com.ethan.mall.gateway.authorization;
 
-import cn.hutool.core.convert.Convert;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.ethan.mall.common.constant.AuthConstant;
-import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.gateway.config.IgnoreUrlsConfig;
 import com.nimbusds.jose.JWSObject;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,7 +13,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -23,8 +22,10 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 import java.net.URI;
 import java.text.ParseException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author ethan
@@ -38,7 +39,6 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
     @Resource
     private IgnoreUrlsConfig ignoreUrlsConfig;
 
-
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication,
                                              AuthorizationContext object) {
@@ -48,7 +48,7 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         // 白名单直接放行
         List<String> ignoreUrls = ignoreUrlsConfig.getUrls();
         for (String ignoreUrl : ignoreUrls) {
-            if (pathMatcher.match(ignoreUrl, uri.toString())) {
+            if (pathMatcher.match(ignoreUrl, uri.getPath())) {
                 return Mono.just(new AuthorizationDecision(true));
             }
         }
@@ -57,6 +57,7 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             return Mono.just(new AuthorizationDecision(true));
         }
         // 不同用户体系不允许互相访问
+        Map info = null;
         try {
             String token = request.getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
             if (StrUtil.isBlank(token)) {
@@ -65,8 +66,8 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             String realToken = token.replace(AuthConstant.JWT_TOKEN_PREFIX, "");
             JWSObject jwsObject = JWSObject.parse(realToken);
             String userStr = jwsObject.getPayload().toString();
-            LoginUser loginUser = JSONUtil.toBean(userStr, LoginUser.class);
-            if (AuthConstant.ADMIN_CLIENT_ID.equals(loginUser.getClientId()) &&
+            info = JSONUtil.toBean(userStr, Map.class);
+            if (AuthConstant.ADMIN_CLIENT_ID.equals(info.get("client_id")) &&
                     !pathMatcher.match(AuthConstant.ADMIN_URL_PATTERN, uri.getPath())) {
                 return Mono.just(new AuthorizationDecision(false));
             }
@@ -79,7 +80,13 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             return Mono.just(new AuthorizationDecision(true));
         }
         // 管理端路径需要校验权限
-        Map<Object,Object> resourceRoleMap = redisTemplate.opsForHash()
+        JSONArray jsonArray = (JSONArray) info.get("authorities");
+        Object map = jsonArray.get(0);
+        if (map == null) {
+            return Mono.just(new AuthorizationDecision(false));
+        }
+        return Mono.just(new AuthorizationDecision(true));
+        /*Map<Object,Object> resourceRoleMap = redisTemplate.opsForHash()
                 .entries(AuthConstant.RESOURCE_ROLES_MAP_KEY);
         Iterator<Object> iterator = resourceRoleMap.keySet().iterator();
         List<String> authorities = new ArrayList<>();
@@ -97,6 +104,6 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
                 .map(GrantedAuthority::getAuthority)
                 .any(authorities::contains)
                 .map(AuthorizationDecision::new)
-                .defaultIfEmpty(new AuthorizationDecision(false));
+                .defaultIfEmpty(new AuthorizationDecision(false));*/
     }
 }
