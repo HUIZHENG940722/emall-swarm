@@ -1,5 +1,6 @@
 package com.ethan.mall.admin.controller;
 
+import cn.hutool.core.map.MapUtil;
 import com.ethan.mall.admin.domain.UmsAdminLoginParam;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
 import com.ethan.mall.admin.service.IUmsAdminService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ethan
@@ -96,13 +98,13 @@ public class UmsAdminController {
         return CommonData.success(roleList);
     }
 
-    /*@ApiOperation(value = "获取当前登录用户信息")
+    @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping(value = "/info")
-    public CommonData<Map<String, Object>> getAdminInfo(Principal principal) {
-        Map<String, Object> data = adminService.getAdminInfo(principal);
+    public CommonData<Map<String, Object>> getAdminInfo() {
+        Map<String, Object> data = adminService.getAdminInfo();
         if (MapUtil.isEmpty(data)) {
             CommonData.unauthorized(null);
         }
         return CommonData.success(data);
-    }*/
+    }
 }

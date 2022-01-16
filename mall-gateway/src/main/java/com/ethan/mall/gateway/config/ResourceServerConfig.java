@@ -54,7 +54,8 @@ public class ResourceServerConfig {
                 .anyExchange().access(authorizationManager)
                 .and().exceptionHandling().accessDeniedHandler(restfulAccessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and().cors().and().csrf().disable();
+                .and().cors()
+                .and().csrf().disable();
         return http.build();
     }
 

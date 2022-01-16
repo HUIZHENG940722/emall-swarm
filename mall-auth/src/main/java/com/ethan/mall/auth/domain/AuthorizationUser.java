@@ -22,6 +22,13 @@ public class AuthorizationUser implements UserDetails {
         this.loginUser = loginUser;
     }
 
+    public LoginUser getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

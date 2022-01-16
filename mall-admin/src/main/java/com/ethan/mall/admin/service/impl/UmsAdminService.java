@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.json.JSONUtil;
 import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
@@ -22,6 +23,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,8 @@ public class UmsAdminService implements IUmsAdminService {
     private IUmsAdminCacheService adminCacheService;
     @Resource
     private IAuthService authService;
+    @Resource
+    private HttpServletRequest request;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -165,32 +169,39 @@ public class UmsAdminService implements IUmsAdminService {
         return roleIds.size();
     }
 
-//    @Override
-//    public Map getAdminInfo(Principal principal) {
-//        // 1 校验
-//        // 2 获取逻辑
-//        // 2.1 验证是否登录
-//        if (principal==null) {
-//            return null;
-//        }
-//        // 2.2 获取用户名信息
-//        String username = principal.getName();
-//        // 2.1 验证用户名信息是否有效
-//        UmsAdmin umsAdmin = getByUsername(username);
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("username", umsAdmin.getUsername());
-//        // 2.3 获取该用户菜单项
-//        data.put("menus", getMenuList(umsAdmin.getId()));
-//        data.put("icon", umsAdmin.getIcon());
-//        // 2.4 获取该用户角色
-//        List<UmsRole> roleList = getRoleList(umsAdmin.getId());
-//        if(CollUtil.isNotEmpty(roleList)){
-//            List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
-//            data.put("roles",roles);
-//        }
-//        // 3 返回结果
-//        return data;
-//    }
+    @Override
+    public Map<String, Object> getAdminInfo() {
+        // 1 校验
+        // 2 获取逻辑
+        // 2.1 获取用户名信息
+        String userStr = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
+        // 2.2 验证用户名信息是否有效
+        if (StrUtil.isEmpty(userStr)) {
+            Asserts.fail(ResultCode.UNAUTHORIZED);
+        }
+        // 2.3 填充相应的登录信息
+        Map<String, Object> data = new HashMap<>();
+        LoginUser loginUser = JSONUtil.toBean(userStr, LoginUser.class);
+        UmsAdmin admin = adminCacheService.getAdmin(loginUser.getUsername());
+        if (admin != null) {
+            data.put("username", admin.getUsername());
+        } else {
+            admin = adminMapper.selectByPrimaryKey(loginUser.getId());
+            adminCacheService.setAdmin(admin);
+            data.put("username", admin.getUsername());
+        }
+        // 2.3 获取该用户菜单项
+        data.put("menus", getMenuList(admin.getId()));
+        data.put("icon", admin.getIcon());
+        // 2.4 获取该用户角色
+        List<UmsRole> roleList = getRoleList(admin.getId());
+        if(CollUtil.isNotEmpty(roleList)){
+            List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
+            data.put("roles",roles);
+        }
+        // 3 返回结果
+        return data;
+    }
 
     @Override
     public List<UmsMenu> getMenuList(Long adminId) {

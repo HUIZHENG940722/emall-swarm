@@ -8,6 +8,7 @@ import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ethan
@@ -79,10 +80,9 @@ public interface IUmsAdminService {
 
     /**
      * 获取当前登录用户信息
-     * @param principal
      * @return
      */
-//    Map getAdminInfo(Principal principal);
+    Map<String, Object> getAdminInfo();
 
     /**
      * 获取用户菜单列表

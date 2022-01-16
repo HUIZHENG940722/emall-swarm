@@ -4,3 +4,5 @@ spring:
       discovery:
         server-addr: http://192.168.3.5:8848
         namespace: public
+      config:
+        server-addr: http://192.168.3.5:8848

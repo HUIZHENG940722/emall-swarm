@@ -48,7 +48,7 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         // 白名单直接放行
         List<String> ignoreUrls = ignoreUrlsConfig.getUrls();
         for (String ignoreUrl : ignoreUrls) {
-            if (pathMatcher.match(ignoreUrl, uri.getPath())) {
+            if (pathMatcher.match(ignoreUrl, uri.toString())) {
                 return Mono.just(new AuthorizationDecision(true));
             }
         }
@@ -58,7 +58,7 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         }
         // 不同用户体系不允许互相访问
         try {
-            String token = request.getHeaders().getFirst(AuthConstant.JWT_TOKEN_PREFIX);
+            String token = request.getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
             if (StrUtil.isBlank(token)) {
                 return Mono.just(new AuthorizationDecision(false));
             }
