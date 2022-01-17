@@ -2,15 +2,19 @@ package com.ethan.mall.admin.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.ethan.mall.admin.service.IUmsResourceService;
+import com.ethan.mall.common.constant.AuthConstant;
+import com.ethan.mall.common.service.IRedisService;
 import com.ethan.mall.mapper.UmsResourceMapper;
-import com.ethan.mall.model.UmsResource;
-import com.ethan.mall.model.UmsResourceExample;
+import com.ethan.mall.mapper.UmsRoleMapper;
+import com.ethan.mall.mapper.UmsRoleResourceRelationMapper;
+import com.ethan.mall.model.*;
 import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ethan
@@ -22,6 +26,18 @@ public class UmsResourceService implements IUmsResourceService {
 
     @Resource
     private UmsResourceMapper resourceMapper;
+
+    @Resource
+    private UmsRoleMapper roleMapper;
+
+    @Resource
+    private UmsRoleResourceRelationMapper roleResourceRelationMapper;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    @Resource
+    private IRedisService redisService;
 
     @Override
     public int create(UmsResource umsResource) {
@@ -66,6 +82,31 @@ public class UmsResourceService implements IUmsResourceService {
         List<UmsResource> resourceList = resourceMapper.selectByExample(new UmsResourceExample());
         // 3 返回结果集
         return resourceList;
+    }
+
+    @Override
+    public Map<String, List<String>> initResourceRolesMap() {
+        // 1 校验
+        // 2 初始化资角色关联
+        Map<String, List<String>> resourceRolesMap = new TreeMap<>();
+        // 2.1 获取所有的资源列表
+        List<UmsResource> resourceList = resourceMapper.selectByExample(new UmsResourceExample());
+        // 2.2 获取所有的角色列表
+        List<UmsRole> roleList = roleMapper.selectByExample(new UmsRoleExample());
+        // 2.3 获取资源角色关联列表
+        List<UmsRoleResourceRelation> relationList = roleResourceRelationMapper
+                .selectByExample(new UmsRoleResourceRelationExample());
+        for (UmsResource umsResource : resourceList) {
+            // 2.4 获取该资源对应的角色id列表
+            Set<Long> roleIds = relationList.stream().filter(item -> item.getResourceId().equals(umsResource.getId()))
+                    .map(UmsRoleResourceRelation::getRoleId).collect(Collectors.toSet());
+            List<String> roleNames = roleList.stream().filter(item -> roleIds.contains(item.getId())).map(item
+                    -> item.getId() + "_" + item.getName()).collect(Collectors.toList());
+            resourceRolesMap.put("/" + applicationName + umsResource.getUrl(), roleNames);
+        }
+        redisService.del(AuthConstant.RESOURCE_ROLES_MAP_KEY);
+        redisService.hSetAll(AuthConstant.RESOURCE_ROLES_MAP_KEY, resourceRolesMap);
+        return resourceRolesMap;
     }
 
 

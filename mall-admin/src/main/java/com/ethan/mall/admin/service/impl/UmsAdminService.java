@@ -280,7 +280,7 @@ public class UmsAdminService implements IUmsAdminService {
      * 根据用户名更新登录时间
      * @param username
      */
-    private int updateLoginTimeByUsername(String username) {
+    private void updateLoginTimeByUsername(String username) {
         // 1 校验
         // 2 执行更新逻辑
         UmsAdmin admin = new UmsAdmin();
@@ -289,7 +289,6 @@ public class UmsAdminService implements IUmsAdminService {
         adminExample.createCriteria().andUsernameEqualTo(username);
         int count = adminMapper.updateByExampleSelective(admin, adminExample);
         // 3 返回结果集
-        return count;
     }
 
     /**
@@ -306,6 +305,7 @@ public class UmsAdminService implements IUmsAdminService {
         loginLog.setCreatedTime(new Date());
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
+        assert attributes != null;
         HttpServletRequest request = attributes.getRequest();
         loginLog.setIp(request.getRemoteAddr());
         loginLogMapper.insert(loginLog);

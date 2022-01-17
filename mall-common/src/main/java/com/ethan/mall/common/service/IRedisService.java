@@ -2,6 +2,9 @@ package com.ethan.mall.common.service;
 
 import com.ethan.mall.model.UmsAdmin;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author ethan
  * @Date 8:13 AM 2022/1/6
@@ -28,4 +31,6 @@ public interface IRedisService {
      * @param redis_expire
      */
     void set(String key, Object value, Long redis_expire);
+
+    void hSetAll(String key, Map<String, List<String>> map);
 }

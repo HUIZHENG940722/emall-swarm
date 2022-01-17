@@ -3,6 +3,7 @@ package com.ethan.mall.admin.service;
 import com.ethan.mall.model.UmsResource;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ethan
@@ -34,4 +35,10 @@ public interface IUmsResourceService {
      * @return
      */
     List<UmsResource> listAl();
+
+    /**
+     * 初始化资源角色规则
+     * @return
+     */
+    Map<String,List<String>> initResourceRolesMap();
 }

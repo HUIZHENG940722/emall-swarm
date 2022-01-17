@@ -1,6 +1,6 @@
 package com.ethan.mall.gateway.authorization;
 
-import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
@@ -13,6 +13,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -22,10 +23,8 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 import java.net.URI;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ethan
@@ -80,30 +79,25 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             return Mono.just(new AuthorizationDecision(true));
         }
         // 管理端路径需要校验权限
-        JSONArray jsonArray = (JSONArray) info.get("authorities");
-        Object map = jsonArray.get(0);
-        if (map == null) {
-            return Mono.just(new AuthorizationDecision(false));
-        }
-        return Mono.just(new AuthorizationDecision(true));
-        /*Map<Object,Object> resourceRoleMap = redisTemplate.opsForHash()
+        Map<Object, Object> resourceRolesMap = redisTemplate.opsForHash()
                 .entries(AuthConstant.RESOURCE_ROLES_MAP_KEY);
-        Iterator<Object> iterator = resourceRoleMap.keySet().iterator();
+        Iterator<Object> iterator = resourceRolesMap.keySet().iterator();
         List<String> authorities = new ArrayList<>();
         while (iterator.hasNext()) {
             String pattern = (String) iterator.next();
             if (pathMatcher.match(pattern, uri.getPath())) {
-                authorities.addAll(Convert.toList(String.class, resourceRoleMap.get(pattern)));
+                authorities.addAll(Convert.toList(String.class, resourceRolesMap.get(pattern)));
             }
         }
-        authorities = authorities.stream().map(i ->
-                i = AuthConstant.AUTHORITY_PREFIX + i).collect(Collectors.toList());
-        // 认证通过且角色匹配的用户可以匹配当前路径
-        return authentication.filter(Authentication::isAuthenticated)
+        authorities = authorities.stream().map(i -> i = AuthConstant.AUTHORITY_PREFIX + i)
+                .collect(Collectors.toList());
+        // 认证通过且角色匹配的用户可以访问当前路径
+        return authentication
+                .filter(Authentication::isAuthenticated)
                 .flatMapIterable(Authentication::getAuthorities)
                 .map(GrantedAuthority::getAuthority)
                 .any(authorities::contains)
                 .map(AuthorizationDecision::new)
-                .defaultIfEmpty(new AuthorizationDecision(false));*/
+                .defaultIfEmpty(new AuthorizationDecision(false));
     }
 }
