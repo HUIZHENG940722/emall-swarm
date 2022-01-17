@@ -10,16 +10,16 @@ import com.ethan.mall.model.UmsAdmin;
 public interface IUmsAdminCacheService {
     /**
      * 从Redis缓存中获取后台用户信息
-     * @param username
+     * @param adminId
      * @return
      */
-    UmsAdmin getAdmin(String username);
+    UmsAdmin getAdmin(Long adminId);
 
     /**
      * 从Redis缓存中删除用户记录
      * @param id
      */
-    void delAdmin(Long id);
+    void delAdmin(Long adminId);
 
     /**
      * 设置Redis缓存

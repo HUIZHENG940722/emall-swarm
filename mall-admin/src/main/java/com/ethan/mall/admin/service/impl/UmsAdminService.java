@@ -185,9 +185,9 @@ public class UmsAdminService implements IUmsAdminService {
             Asserts.fail(ResultCode.UNAUTHORIZED);
         }
         // 2.3 填充相应的登录信息
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>(10);
         LoginUser loginUser = JSONUtil.toBean(userStr, LoginUser.class);
-        UmsAdmin admin = adminCacheService.getAdmin(loginUser.getUsername());
+        UmsAdmin admin = adminCacheService.getAdmin(loginUser.getId());
         if (admin != null) {
             data.put("username", admin.getUsername());
         } else {
@@ -195,10 +195,10 @@ public class UmsAdminService implements IUmsAdminService {
             adminCacheService.setAdmin(admin);
             data.put("username", admin.getUsername());
         }
-        // 2.3 获取该用户菜单项
+        // 2.4 获取该用户菜单项
         data.put("menus", getMenuList(admin.getId()));
         data.put("icon", admin.getIcon());
-        // 2.4 获取该用户角色
+        // 2.5 获取该用户角色
         List<UmsRole> roleList = getRoleList(admin.getId());
         if(CollUtil.isNotEmpty(roleList)){
             List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
@@ -261,12 +261,7 @@ public class UmsAdminService implements IUmsAdminService {
     public UmsAdmin getByUsername(String username) {
         // 1 校验
         // 2 查询
-        // 2.1 从redis缓存中获取
-        UmsAdmin admin = adminCacheService.getAdmin(username);
-        if (admin != null) {
-            return admin;
-        }
-        // 2.2 拼装查询条件
+        // 2.1 拼装查询条件
         UmsAdminExample adminExample = new UmsAdminExample();
         adminExample.createCriteria().andUsernameEqualTo(username);
         // 2.2 执行查询

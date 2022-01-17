@@ -27,25 +27,24 @@ public class UmsAdminCacheService implements IUmsAdminCacheService {
     @Resource
     private IUmsAdminService adminService;
     @Override
-    public UmsAdmin getAdmin(String username) {
+    public UmsAdmin getAdmin(Long adminId) {
         // 1 校验
         // 2 执行逻辑
-        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + username;
+        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + adminId;
         UmsAdmin admin = (UmsAdmin) redisService.get(key);
         // 3 返回结果集
         return admin;
     }
 
     @Override
-    public void delAdmin(Long id) {
-        UmsAdmin admin = adminService.getByAdminId(id);
-        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getUsername();
+    public void delAdmin(Long adminId) {
+        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + adminId;
         redisService.del(key);
     }
 
     @Override
     public void setAdmin(UmsAdmin admin) {
-        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getUsername();
+        String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getId();
         redisService.set(key, admin, REDIS_EXPIRE);
     }
 }
