@@ -16,11 +16,14 @@ import com.ethan.mall.common.api.ResultCode;
 import com.ethan.mall.common.constant.AuthConstant;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
+import com.ethan.mall.mapper.UmsAdminLoginLogMapper;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.mapper.UmsAdminRoleRelationMapper;
 import com.ethan.mall.model.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +53,8 @@ public class UmsAdminService implements IUmsAdminService {
     private IAuthService authService;
     @Resource
     private HttpServletRequest request;
+    @Resource
+    private UmsAdminLoginLogMapper loginLogMapper;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -228,7 +233,7 @@ public class UmsAdminService implements IUmsAdminService {
             Asserts.fail("用户或密码不能为空");
         }
         // 2 执行逻辑
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(10);
         params.put("client_id", AuthConstant.ADMIN_CLIENT_ID);
         params.put("client_secret", "123456");
         params.put("grant_type", "password");
@@ -238,6 +243,7 @@ public class UmsAdminService implements IUmsAdminService {
         // 3 返回结果集
         if (ResultCode.SUCCESS.getCode().equals(accessToken.getCode())) {
             updateLoginTimeByUsername(username);
+            insertLoginLog(username);
         }
         return accessToken;
     }
@@ -289,5 +295,24 @@ public class UmsAdminService implements IUmsAdminService {
         int count = adminMapper.updateByExampleSelective(admin, adminExample);
         // 3 返回结果集
         return count;
+    }
+
+    /**
+     * 添加登录日志
+     * @param username
+     */
+    private void insertLoginLog(String username) {
+        UmsAdmin admin = getByUsername(username);
+        if (admin == null) {
+            return;
+        }
+        UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
+        loginLog.setAdminId(admin.getId());
+        loginLog.setCreatedTime(new Date());
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        loginLog.setIp(request.getRemoteAddr());
+        loginLogMapper.insert(loginLog);
     }
 }
