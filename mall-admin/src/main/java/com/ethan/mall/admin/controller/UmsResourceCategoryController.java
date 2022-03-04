@@ -25,7 +25,7 @@ public class UmsResourceCategoryController {
 
     @PostMapping(value = "/create")
     @ApiOperation(value = "创建资源分类")
-    public CommonData create(@RequestBody UmsResourceCategory resourceCategory) {
+    public CommonData<Integer> create(@RequestBody UmsResourceCategory resourceCategory) {
         int count = resourceCategoryService.create(resourceCategory);
         if (count > 0) {
             return CommonData.success(count);

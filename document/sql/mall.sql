@@ -351,6 +351,25 @@ CREATE TABLE ums_admin(
 )  COMMENT = '后台用户表';
 
 -- ----------------------------
+-- Table structure for ums_admin_login_log
+-- ----------------------------
+DROP TABLE IF EXISTS ums_admin_login_log;
+CREATE TABLE ums_admin_login_log(
+    tenant_id bigint(20)    COMMENT '租户号' ,
+    revision bigint(20)    COMMENT '乐观锁' ,
+    created_by bigint(20)    COMMENT '创建人' ,
+    created_time DATETIME NOT NULL   COMMENT '创建时间' ,
+    updated_by bigint(20)    COMMENT '更新人' ,
+    updated_time DATETIME    COMMENT '更新时间' ,
+    id bigint(20) NOT NULL AUTO_INCREMENT  COMMENT '主键id' ,
+    admin_id bigint(20) NOT NULL   COMMENT '后台用户id' ,
+    ip VARCHAR(64)    COMMENT '客户端ip' ,
+    address VARCHAR(64)    COMMENT '地址' ,
+    user_agent VARCHAR(64)    COMMENT '浏览器登录类型' ,
+    PRIMARY KEY (id)
+)  COMMENT = '后台用户登录日志表';
+
+-- ----------------------------
 -- Table structure for ums_role
 -- ----------------------------
 DROP TABLE IF EXISTS ums_role;

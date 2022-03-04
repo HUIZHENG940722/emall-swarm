@@ -33,7 +33,7 @@ public class PmsProductController {
 
     @ApiOperation(value = "创建商品")
     @PostMapping(value = "/create")
-    public CommonData create(@RequestBody PmsProductAddParam productAddParam) {
+    public CommonData<Integer> create(@RequestBody PmsProductAddParam productAddParam) {
         int count = productService.create(productAddParam);
         if (count > 0) {
             CommonData.success(count);

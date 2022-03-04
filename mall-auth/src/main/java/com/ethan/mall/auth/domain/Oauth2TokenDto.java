@@ -1,4 +1,4 @@
-package com.ethan.mall.common.domain;
+package com.ethan.mall.auth.domain;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

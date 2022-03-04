@@ -20,7 +20,6 @@ import java.util.List;
  * @Description 商品分类管理
  */
 @RestController
-//@CrossOrigin
 @Api(value = "PmsProductCategoryController", description = "商品分类管理")
 @RequestMapping(value = "/productCategory")
 public class PmsProductCategoryController {
@@ -46,7 +45,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation(value = "创建商品分类")
     @PostMapping(value = "/create")
-    public CommonData add(@Validated @RequestBody PmsProductCategoryAddParam productCategoryAddParam) {
+    public CommonData<Integer> add(@Validated @RequestBody PmsProductCategoryAddParam productCategoryAddParam) {
         int count = productCategoryService.create(productCategoryAddParam);
         if (count > 0) {
             return CommonData.success(count);
@@ -64,7 +63,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation(value = "更新商品分类")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id,
+    public CommonData<Integer> update(@PathVariable Long id,
                              @Validated @RequestBody PmsProductCategoryAddParam productCategoryAddParam) {
         int count = productCategoryService.update(id, productCategoryAddParam);
         if (count > 0) {
@@ -75,7 +74,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation(value = "删除商品分类")
     @DeleteMapping(value = "/delete/{id}")
-    public CommonData delete(@PathVariable Long id) {
+    public CommonData<Integer> delete(@PathVariable Long id) {
         int count = productCategoryService.delete(id);
         if (count > 0) {
             return CommonData.success(count);

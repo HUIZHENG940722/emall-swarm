@@ -4,6 +4,7 @@
 <mapper namespace="com.ethan.mall.admin.dao.UmsAdminDao">
     <select id="getMenuList" resultType="com.ethan.mall.model.UmsMenu">
         select m.id id,
+               m.name name,
                m.parent_id parentId,
                m.created_time createTime,
                m.title title,

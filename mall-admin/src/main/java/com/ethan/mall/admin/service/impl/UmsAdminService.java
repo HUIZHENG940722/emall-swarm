@@ -3,28 +3,30 @@ package com.ethan.mall.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ethan.mall.admin.config.AuthService;
+import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.json.JSONUtil;
 import com.ethan.mall.admin.dao.UmsAdminDao;
 import com.ethan.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
+import com.ethan.mall.admin.service.IUmsAdminCacheService;
 import com.ethan.mall.admin.service.IUmsAdminService;
-import com.ethan.mall.admin.service.IUmsRoleService;
+import com.ethan.mall.admin.service.feign.IAuthService;
+import com.ethan.mall.common.api.CommonData;
+import com.ethan.mall.common.api.ResultCode;
+import com.ethan.mall.common.constant.AuthConstant;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.common.exception.Asserts;
+import com.ethan.mall.mapper.UmsAdminLoginLogMapper;
 import com.ethan.mall.mapper.UmsAdminMapper;
 import com.ethan.mall.mapper.UmsAdminRoleRelationMapper;
 import com.ethan.mall.model.*;
-import com.ethan.mall.security.component.JwtTokenUtil;
 import com.github.pagehelper.PageHelper;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,20 +41,20 @@ public class UmsAdminService implements IUmsAdminService {
     private UmsAdminMapper adminMapper;
 
     @Resource
-    private AuthService authService;
-
-    @Resource
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
     @Resource
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
     @Resource
     private UmsAdminDao adminDao;
+    @Resource
+    private IUmsAdminCacheService adminCacheService;
+    @Resource
+    private IAuthService authService;
+    @Resource
+    private HttpServletRequest request;
+    @Resource
+    private UmsAdminLoginLogMapper loginLogMapper;
     @Override
     public UmsAdmin register(UmsAdminRegisterParam adminRegisterParam) {
         // 1 校验
@@ -81,7 +83,7 @@ public class UmsAdminService implements IUmsAdminService {
         // 2.2 设置创建时间
         admin.setCreatedTime(new Date());
         // 2.3 对用户密码进行加密
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setPassword(BCrypt.hashpw(admin.getPassword()));
         // 2.4 插入用户信息
         int i = adminMapper.insertSelective(admin);
         // 3 返回结果集
@@ -119,6 +121,8 @@ public class UmsAdminService implements IUmsAdminService {
         admin.setUpdatedTime(new Date());
         // 2.3 更新数据
         int count = adminMapper.updateByPrimaryKeySelective(admin);
+        // 2.4 从缓存中删除用户记录
+        adminCacheService.delAdmin(id);
         // 3 返回结果集
         return count;
     }
@@ -145,24 +149,6 @@ public class UmsAdminService implements IUmsAdminService {
     }
 
     @Override
-    public String login(String username, String password) {
-        // 1 校验
-        // 2 获取token信息
-        UserDetails userDetails = authService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("密码不正确");
-        }
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtTokenUtil.generateToken(userDetails);
-        // 更新最后一次登录时间
-        int count = updateLoginTimeByUsername(username);
-        // 3 返回结果
-        return token;
-    }
-
-    @Override
     public int updateRole(Long adminId, List<Long> roleIds) {
         // 1 校验
         // 2 分配角色逻辑
@@ -182,29 +168,38 @@ public class UmsAdminService implements IUmsAdminService {
             }
             adminRoleRelationDao.insertList(list);
         }
+        // 2.3 从缓存中删除用户记录
+        adminCacheService.delAdmin(adminId);
         // 3 返回结果
         return roleIds.size();
     }
 
     @Override
-    public Map getAdminInfo(Principal principal) {
+    public Map<String, Object> getAdminInfo() {
         // 1 校验
         // 2 获取逻辑
-        // 2.1 验证是否登录
-        if (principal==null) {
-            return null;
+        // 2.1 获取用户名信息
+        String userStr = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
+        // 2.2 验证用户名信息是否有效
+        if (StrUtil.isEmpty(userStr)) {
+            Asserts.fail(ResultCode.UNAUTHORIZED);
         }
-        // 2.2 获取用户名信息
-        String username = principal.getName();
-        // 2.1 验证用户名信息是否有效
-        UmsAdmin umsAdmin = getByUsername(username);
-        Map<String, Object> data = new HashMap<>();
-        data.put("username", umsAdmin.getUsername());
-        // 2.3 获取该用户菜单项
-        data.put("menus", getMenuList(umsAdmin.getId()));
-        data.put("icon", umsAdmin.getIcon());
-        // 2.4 获取该用户角色
-        List<UmsRole> roleList = getRoleList(umsAdmin.getId());
+        // 2.3 填充相应的登录信息
+        Map<String, Object> data = new HashMap<>(10);
+        LoginUser loginUser = JSONUtil.toBean(userStr, LoginUser.class);
+        UmsAdmin admin = adminCacheService.getAdmin(loginUser.getId());
+        if (admin != null) {
+            data.put("username", admin.getUsername());
+        } else {
+            admin = adminMapper.selectByPrimaryKey(loginUser.getId());
+            adminCacheService.setAdmin(admin);
+            data.put("username", admin.getUsername());
+        }
+        // 2.4 获取该用户菜单项
+        data.put("menus", getMenuList(admin.getId()));
+        data.put("icon", admin.getIcon());
+        // 2.5 获取该用户角色
+        List<UmsRole> roleList = getRoleList(admin.getId());
         if(CollUtil.isNotEmpty(roleList)){
             List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
             data.put("roles",roles);
@@ -220,6 +215,37 @@ public class UmsAdminService implements IUmsAdminService {
         List<UmsMenu> menuList = adminDao.getMenuList(adminId);
         // 3 返回结果集
         return menuList;
+    }
+
+    @Override
+    public UmsAdmin getByAdminId(Long id) {
+        // 1 校验
+        // 2 查询逻辑
+        UmsAdmin admin = adminMapper.selectByPrimaryKey(id);
+        // 3 返回结果集
+        return admin;
+    }
+
+    @Override
+    public CommonData login(String username, String password) {
+        // 1 校验
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            Asserts.fail("用户或密码不能为空");
+        }
+        // 2 执行逻辑
+        Map<String, String> params = new HashMap<>(10);
+        params.put("client_id", AuthConstant.ADMIN_CLIENT_ID);
+        params.put("client_secret", "123456");
+        params.put("grant_type", "password");
+        params.put("username", username);
+        params.put("password", password);
+        CommonData accessToken = authService.getAccessToken(params);
+        // 3 返回结果集
+        if (ResultCode.SUCCESS.getCode().equals(accessToken.getCode())) {
+            updateLoginTimeByUsername(username);
+            insertLoginLog(username);
+        }
+        return accessToken;
     }
 
     @Override
@@ -242,7 +268,10 @@ public class UmsAdminService implements IUmsAdminService {
         List<UmsAdmin> umsAdmins = adminMapper.selectByExample(adminExample);
         // 3 返回结果集
         if (CollUtil.isNotEmpty(umsAdmins)) {
-            return umsAdmins.get(0);
+            UmsAdmin umsAdmin = umsAdmins.get(0);
+            // 设置redis缓存
+            adminCacheService.setAdmin(umsAdmin);
+            return umsAdmin;
         }
         return null;
     }
@@ -251,7 +280,7 @@ public class UmsAdminService implements IUmsAdminService {
      * 根据用户名更新登录时间
      * @param username
      */
-    private int updateLoginTimeByUsername(String username) {
+    private void updateLoginTimeByUsername(String username) {
         // 1 校验
         // 2 执行更新逻辑
         UmsAdmin admin = new UmsAdmin();
@@ -260,6 +289,25 @@ public class UmsAdminService implements IUmsAdminService {
         adminExample.createCriteria().andUsernameEqualTo(username);
         int count = adminMapper.updateByExampleSelective(admin, adminExample);
         // 3 返回结果集
-        return count;
+    }
+
+    /**
+     * 添加登录日志
+     * @param username
+     */
+    private void insertLoginLog(String username) {
+        UmsAdmin admin = getByUsername(username);
+        if (admin == null) {
+            return;
+        }
+        UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
+        loginLog.setAdminId(admin.getId());
+        loginLog.setCreatedTime(new Date());
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
+        assert attributes != null;
+        HttpServletRequest request = attributes.getRequest();
+        loginLog.setIp(request.getRemoteAddr());
+        loginLogMapper.insert(loginLog);
     }
 }

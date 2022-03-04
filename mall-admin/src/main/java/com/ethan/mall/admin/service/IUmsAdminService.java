@@ -1,12 +1,12 @@
 package com.ethan.mall.admin.service;
 
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
+import com.ethan.mall.common.api.CommonData;
 import com.ethan.mall.common.domain.LoginUser;
 import com.ethan.mall.model.UmsAdmin;
 import com.ethan.mall.model.UmsMenu;
 import com.ethan.mall.model.UmsRole;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +68,7 @@ public interface IUmsAdminService {
      * @param password
      * @return
      */
-    String login(String username, String password);
+//    String login(String username, String password);
 
     /**
      * 给用户分配角色
@@ -80,10 +80,9 @@ public interface IUmsAdminService {
 
     /**
      * 获取当前登录用户信息
-     * @param principal
      * @return
      */
-    Map getAdminInfo(Principal principal);
+    Map<String, Object> getAdminInfo();
 
     /**
      * 获取用户菜单列表
@@ -91,4 +90,19 @@ public interface IUmsAdminService {
      * @return
      */
     List<UmsMenu> getMenuList(Long adminId);
+
+    /**
+     * 根据后台用户id获取后台用户
+     * @param id
+     * @return
+     */
+    UmsAdmin getByAdminId(Long id);
+
+    /**
+     * 登录以后返回token
+     * @param username
+     * @param password
+     * @return
+     */
+    CommonData login(String username, String password);
 }

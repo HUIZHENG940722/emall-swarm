@@ -36,7 +36,7 @@ public class PmsBrandController {
 
     @ApiOperation(value = "创建商品品牌")
     @PostMapping(value = "/create")
-    public CommonData create(@Validated @RequestBody PmsBrandCreateParam pmsBrand) {
+    public CommonData<Integer> create(@Validated @RequestBody PmsBrandCreateParam pmsBrand) {
         int count = brandService.create(pmsBrand);
         if (count > 0) {
             return CommonData.success(count);
@@ -53,7 +53,7 @@ public class PmsBrandController {
 
     @ApiOperation(value = "根据品牌id更新商品品牌")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable(value = "id") Long id, @Validated @RequestBody PmsBrandCreateParam brandCreateParam) {
+    public CommonData<Integer> update(@PathVariable(value = "id") Long id, @Validated @RequestBody PmsBrandCreateParam brandCreateParam) {
         int count = brandService.update(id, brandCreateParam);
         if (count > 0) {
             return CommonData.success(count);

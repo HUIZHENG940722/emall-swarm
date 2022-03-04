@@ -1,6 +1,5 @@
 package com.ethan.mall.admin.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import com.ethan.mall.admin.domain.UmsAdminLoginParam;
 import com.ethan.mall.admin.domain.UmsAdminRegisterParam;
@@ -17,11 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author ethan
@@ -61,7 +57,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "修改指定用户信息")
     @PutMapping(value = "/update/{id}")
-    public CommonData update(@PathVariable Long id, @RequestBody UmsAdminRegisterParam adminRegisterParam) {
+    public CommonData<Integer> update(@PathVariable Long id, @Validated @RequestBody UmsAdminRegisterParam adminRegisterParam) {
         int count = adminService.update(id, adminRegisterParam);
         if (count > 0) {
             return CommonData.success(count);
@@ -76,17 +72,10 @@ public class UmsAdminController {
         return loginUser;
     }
 
-    @ApiOperation(value = "登录获取token")
+    @ApiOperation(value = "登录以后返回token")
     @PostMapping(value = "/login")
     public CommonData login(@Validated @RequestBody UmsAdminLoginParam adminLoginParam) {
-        String token = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
-        if (token == null) {
-            return CommonData.failed("用户名或密码错误");
-        }
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", token);
-        tokenMap.put("tokenHead", tokenHead);
-        return CommonData.success(tokenMap);
+        return adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
     }
 
     @ApiOperation(value = "登出功能")
@@ -97,7 +86,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "给用户分配角色列表")
     @PostMapping(value = "/role/update")
-    public CommonData updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
+    public CommonData<Integer> updateRole(@RequestParam Long adminId, @RequestParam List<Long> roleIds) {
         int count = adminService.updateRole(adminId, roleIds);
         return CommonData.success(count);
     }
@@ -111,8 +100,8 @@ public class UmsAdminController {
 
     @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping(value = "/info")
-    public CommonData getAdminInfo(Principal principal) {
-        Map data = adminService.getAdminInfo(principal);
+    public CommonData<Map<String, Object>> getAdminInfo() {
+        Map<String, Object> data = adminService.getAdminInfo();
         if (MapUtil.isEmpty(data)) {
             CommonData.unauthorized(null);
         }

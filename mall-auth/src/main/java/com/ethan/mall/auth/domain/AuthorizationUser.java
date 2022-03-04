@@ -1,42 +1,53 @@
-package com.ethan.mall.admin.domain;
+package com.ethan.mall.auth.domain;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ethan.mall.common.domain.LoginUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ethan
- * @Date 8:43 AM 2021/12/30
- * @Description 认证用户信息
+ * @Date 11:15 AM 2022/1/8
+ * @Description 认证用户
  */
-public class AuthUser implements UserDetails {
+public class AuthorizationUser implements UserDetails {
     private LoginUser loginUser;
 
-    public AuthUser(LoginUser loginUser) {
+    public AuthorizationUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
+    }
+
+    public LoginUser getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(LoginUser loginUser) {
         this.loginUser = loginUser;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        if (loginUser.getRoles() != null) {
-            loginUser.getRoles().forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));
+        List<String> roles = this.loginUser.getRoles();
+        if (CollUtil.isEmpty(roles)) {
+            return null;
         }
-        return authorities;
+        return roles.stream().map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return loginUser.getPassword();
+        return this.loginUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return loginUser.getUsername();
+        return this.loginUser.getUsername();
     }
 
     @Override
@@ -56,6 +67,6 @@ public class AuthUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return loginUser.getStatus()==1;
+        return this.loginUser.getStatus().equals(1);
     }
 }
